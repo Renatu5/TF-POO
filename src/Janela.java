@@ -9,7 +9,7 @@ public class Janela extends JFrame {
         super();
         // Inicializa os dois formulários
         formTransporte = new FormTransporte(this); // Instância de FormTransporte
-        formDrones = new FormDrones(this, formTransporte);    // Passa a instância de FormTransporte para Form
+        formDrones = new FormDrones(this);    // Passa a instância de FormTransporte para Form
 
         // Exibe inicialmente o Form padrão
         painelAtual = formDrones.getPainel();
@@ -38,7 +38,8 @@ public class Janela extends JFrame {
         painelAtual = formDrones.getPainel(); // Troca para o painel de Form
         this.add(painelAtual); // Adiciona o novo painel
         this.revalidate(); // Revalida a interface
-        this.repaint(); // Re-renderiza a interface
+        this.repaint();// Re-renderiza a interface
+        formDrones.setTransportes(formTransporte);
     }
 }
 

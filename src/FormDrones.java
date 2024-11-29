@@ -53,8 +53,8 @@ public class FormDrones{
         // TODO: place custom component creation code here
         logo = new JLabel(new ImageIcon("logotipo.png"));
     }
-    public FormDrones(Janela janela, FormTransporte formTransporte) {
-        this.formTransporte = formTransporte;
+    public FormDrones(Janela janela) {
+        this.formTransporte = null;
         selecaoTipo.addItem("dados.Drone Pessoal");
         selecaoTipo.addItem("dados.Drone de Carga");
         selecaoCarga.addItem("Inanimada");
@@ -139,6 +139,10 @@ public class FormDrones{
 
     public ArrayList<Drone> getDrones() {
         return drones;
+    }
+
+    public void setTransportes(FormTransporte transportes) {
+        this.formTransporte = transportes;
     }
 
     private void cadastrarDrone() {
