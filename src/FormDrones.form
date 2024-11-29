@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="FormDrones">
+  <grid id="27dc6" binding="painel" layout-manager="GridLayoutManager" row-count="14" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="5" left="10" bottom="0" right="0"/>
+    <constraints>
+      <xy x="55" y="20" width="1920" height="1080"/>
+    </constraints>
+    <properties>
+      <background color="-1"/>
+      <enabled value="true"/>
+      <font name="Baron Neue" size="20" style="0"/>
+      <foreground color="-2821"/>
+      <minimumSize width="1920" height="1080"/>
+      <preferredSize width="1920" height="1080"/>
+      <visible value="true"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="6511e" class="javax.swing.JLabel" binding="labelTipo">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="169" height="23"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Tipo de dados.Drone"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+        </properties>
+      </component>
+      <component id="93e13" class="javax.swing.JComboBox" binding="selecaoTipo">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="169" height="34"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="b99eb" class="javax.swing.JLabel" binding="logo" custom-create="true">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="3" use-parent-layout="false">
+            <preferred-size width="169" height="0"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="77cb6" class="javax.swing.JLabel" binding="labelSubtitulo">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Bebas Neue" size="28" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Cadastro de Drones"/>
+        </properties>
+      </component>
+      <component id="c117" class="javax.swing.JLabel" binding="labelInstrucao">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Selecione abaixo as opções para cadastro do drone"/>
+          <verticalAlignment value="3"/>
+          <verticalTextPosition value="3"/>
+        </properties>
+      </component>
+      <component id="7fa59" class="javax.swing.JLabel" binding="labelCodigo">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Código (6 dígitos)"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+        </properties>
+      </component>
+      <component id="85c9" class="javax.swing.JTextField" binding="campoCodigo">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="afe35" class="javax.swing.JLabel" binding="labelTitulo">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Baron Neue" size="72" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="ACME AirDRONE"/>
+          <verticalAlignment value="3"/>
+          <verticalTextPosition value="3"/>
+        </properties>
+      </component>
+      <component id="c0a63" class="javax.swing.JLabel" binding="labelCusto">
+        <constraints>
+          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <requestFocusEnabled value="true"/>
+          <text value="Custo Fixo (R$)"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+        </properties>
+      </component>
+      <component id="4cd86" class="javax.swing.JTextField" binding="campoCusto">
+        <constraints>
+          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="85185" class="javax.swing.JLabel" binding="labelAutonomia">
+        <constraints>
+          <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Autonomia (minutos)"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+        </properties>
+      </component>
+      <component id="909c2" class="javax.swing.JTextField" binding="campoAutonomia">
+        <constraints>
+          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="94206" class="javax.swing.JLabel" binding="labelCapacidadeQuantidade">
+        <constraints>
+          <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Capacidade (Nº de Pessoas)"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+        </properties>
+      </component>
+      <component id="a026b" class="javax.swing.JTextField" binding="campoCapacidadeQuantidade">
+        <constraints>
+          <grid row="4" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <hspacer id="acdcb">
+        <constraints>
+          <grid row="5" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <component id="16657" class="javax.swing.JTextArea" binding="areaDeTexto">
+        <constraints>
+          <grid row="13" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="0" anchor="0" fill="3" indent="2" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <autoscrolls value="true"/>
+          <dragEnabled value="true"/>
+          <foreground color="-16777216"/>
+          <opaque value="true"/>
+          <text value=""/>
+          <wrapStyleWord value="false"/>
+        </properties>
+      </component>
+      <vspacer id="23f9a">
+        <constraints>
+          <grid row="13" column="6" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="194" height="14"/>
+          </grid>
+        </constraints>
+      </vspacer>
+      <component id="308d4" class="javax.swing.JButton" binding="botaoCadastro" default-binding="true">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Confirmar Cadastro"/>
+        </properties>
+      </component>
+      <component id="a3298" class="javax.swing.JButton" binding="botaoDados">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Mostrar Dados"/>
+        </properties>
+      </component>
+      <component id="97fa5" class="javax.swing.JLabel" binding="labelTipoCarga">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="169" height="23"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Tipo de Carga"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+          <visible value="false"/>
+        </properties>
+      </component>
+      <component id="bec8b" class="javax.swing.JComboBox" binding="selecaoCarga">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="169" height="34"/>
+          </grid>
+        </constraints>
+        <properties>
+          <model/>
+          <visible value="false"/>
+        </properties>
+      </component>
+      <component id="6fa5f" class="javax.swing.JLabel" binding="labelExtras">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="1" anchor="9" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bebas Neue" size="18" style="0"/>
+          <foreground color="-16747009"/>
+          <text value="Extras"/>
+          <verticalAlignment value="1"/>
+          <verticalTextPosition value="1"/>
+          <visible value="false"/>
+        </properties>
+      </component>
+      <component id="720fa" class="javax.swing.JCheckBox" binding="checkboxCargaInanimada">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <actionCommand value="Carga Viva"/>
+          <background color="-1"/>
+          <foreground color="-8552574"/>
+          <label value="Protegido"/>
+          <margin top="0" left="0" bottom="0" right="0"/>
+          <text value="Protegido"/>
+          <verticalAlignment value="0"/>
+          <visible value="false"/>
+        </properties>
+      </component>
+      <component id="e366c" class="javax.swing.JCheckBox" binding="checkboxCargaViva">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <actionCommand value="Carga Viva"/>
+          <background color="-1"/>
+          <foreground color="-8552574"/>
+          <label value="Climatizado"/>
+          <margin top="0" left="0" bottom="0" right="0"/>
+          <text value="Climatizado"/>
+          <verticalAlignment value="0"/>
+          <visible value="false"/>
+        </properties>
+      </component>
+      <component id="88a8c" class="javax.swing.JButton" binding="botaoTrocaJanela">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Ir para Menu de Transportes"/>
+        </properties>
+      </component>
+      <component id="a516d" class="javax.swing.JButton" binding="botaoSair">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="70" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <alignmentY value="1.0"/>
+          <text value="Sair"/>
+        </properties>
+      </component>
+      <component id="9be11" class="javax.swing.JButton" binding="botaoRelatorioGeral">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Relatório Geral"/>
+        </properties>
+      </component>
+      <component id="504cb" class="javax.swing.JButton" binding="botaoCarregarDados">
+        <constraints>
+          <grid row="12" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Carregar Dados"/>
+        </properties>
+      </component>
+      <component id="50f03" class="javax.swing.JButton" binding="botaoLimpar">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="2" use-parent-layout="false">
+            <preferred-size width="194" height="34"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Limpar"/>
+        </properties>
+      </component>
+      <component id="df026" class="javax.swing.JButton" binding="botaoSalvarDados">
+        <constraints>
+          <grid row="11" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Salvar Dados"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
