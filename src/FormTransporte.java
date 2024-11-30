@@ -112,7 +112,7 @@ public class FormTransporte {
         botaoTrocaJanelaForm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                janela.trocarParaForm(); // Troca para a tela FormTransporte
+                janela.trocarParaForm();
             }
         });
 
@@ -131,7 +131,6 @@ public class FormTransporte {
 
     private void cadastrarTransporte() {
         try {
-            // Validações básicas
             String numeroStr = campoNumero.getText().trim();
             String nomeCliente = campoCliente.getText().trim();
             String descricao = campoDescricao.getText().trim();
@@ -147,7 +146,6 @@ public class FormTransporte {
                 return;
             }
 
-            // Validação numérica e conversão
             int numero, pessoas;
             double peso, latOrigem, lonOrigem, latDestino, lonDestino, tempMin = 0.0, tempMax = 0.0;
 
@@ -155,7 +153,6 @@ public class FormTransporte {
                 numero = Integer.parseInt(numeroStr);
                 pessoas = Integer.parseInt(campoTempMinEPessoas.getText().trim());
 
-                // Get common information regardless of transport type
                 peso = Double.parseDouble(campoPeso.getText().trim());
                 latOrigem = Double.parseDouble(campoLatOrigem.getText().trim());
                 lonOrigem = Double.parseDouble(campoLonOrigem.getText().trim());
@@ -165,7 +162,6 @@ public class FormTransporte {
                 validarLatLon(latOrigem, lonOrigem, "Origem");
                 validarLatLon(latDestino, lonDestino, "Destino");
 
-                // Check the transport type and get extra data if necessary
                 if ("Carga Viva".equals(tipoTransporte)) {
                     tempMin = Double.parseDouble(campoTempMinEPessoas.getText().trim());
                     tempMax = Double.parseDouble(campoTempMax.getText().trim());
@@ -176,7 +172,7 @@ public class FormTransporte {
                 return;
             }
 
-            // Verificar duplicidade de número
+            // duplicidade de número
             for (Transporte t : transportes) {
                 if (t.getNumero() == numero) {
                     JOptionPane.showMessageDialog(painelTransporte, "ERRO: Número de transporte já cadastrado.");
@@ -184,7 +180,7 @@ public class FormTransporte {
                 }
             }
 
-            // Criar o transporte com base no tipo selecionado
+            // cria o transporte com base no tipo selecionado
             Transporte novoTransporte = null;
             if ("Pessoal".equals(tipoTransporte)) {
                 novoTransporte = new TransportePessoal(tipoTransporte, numero, nomeCliente, descricao, peso, latOrigem, lonOrigem, latDestino, lonDestino, pessoas);
@@ -196,9 +192,8 @@ public class FormTransporte {
             }
 
             if (novoTransporte != null) {
-                // Adiciona o transporte na fila de pendentes
                 transportes.add(novoTransporte);
-                areaDeTexto.setText("dados.Transporte adicionado à fila de pendentes.\n" + novoTransporte);
+                areaDeTexto.setText("Transporte adicionado à fila de pendentes.\n" + novoTransporte);
             } else {
                 JOptionPane.showMessageDialog(painelTransporte, "ERRO: Não foi possível cadastrar o transporte.");
             }
@@ -222,7 +217,7 @@ public class FormTransporte {
         for (Transporte transportes : transportes) {
             if (transportes instanceof TransportePessoal) {
                 TransportePessoal tp = (TransportePessoal) transportes;
-                builder.append("dados.Transporte Pessoal - Número: ").append(tp.getNumero())
+                builder.append("Transporte Pessoal - Número: ").append(tp.getNumero())
                         .append(", Cliente: ").append(tp.getNomeCliente())
                         .append(", Descrição: ").append(tp.getDescricao())
                         .append(", Peso: ").append(tp.getPeso())
@@ -232,7 +227,7 @@ public class FormTransporte {
                         .append(", Situação: ").append(tp.getSituacao()).append("\n");
             } else if (transportes instanceof TransporteCargaInanimada) {
                 TransporteCargaInanimada tci = (TransporteCargaInanimada) transportes;
-                builder.append("dados.Transporte de Carga Inanimada - Número: ").append(tci.getNumero())
+                builder.append("Transporte de Carga Inanimada - Número: ").append(tci.getNumero())
                         .append(", Cliente: ").append(tci.getNomeCliente())
                         .append(", Descrição: ").append(tci.getDescricao())
                         .append(", Peso: ").append(tci.getPeso())
@@ -241,7 +236,7 @@ public class FormTransporte {
                         .append(", Situação: ").append(tci.getSituacao()).append("\n");
             } else if (transportes instanceof TransporteCargaViva) {
                 TransporteCargaViva tcv = (TransporteCargaViva) transportes;
-                builder.append("dados.Transporte de Carga Viva - Número: ").append(tcv.getNumero())
+                builder.append("Transporte de Carga Viva - Número: ").append(tcv.getNumero())
                         .append(", Cliente: ").append(tcv.getNomeCliente())
                         .append(", Descrição: ").append(tcv.getDescricao())
                         .append(", Peso: ").append(tcv.getPeso())
@@ -256,20 +251,20 @@ public class FormTransporte {
     private void processarTransportesPendentes() {
         StringBuilder resultado = new StringBuilder("PROCESSAMENTO DE TRANSPORTES PENDENTES:\n");
 
-        // Lista temporária para armazenar transportes não alocados
+        // uma lista temporária para armazenar transportes não alocados
         ArrayList<Transporte> naoAlocados = new ArrayList<>();
-        // Percorre cada transporte pendente
+        // percorre cada transporte pendente
         for (Transporte transporte : transportes) {
             boolean alocado = false;
-            // Tenta alocar o transporte a um drone disponível
+            // tenta alocar o transporte a um drone disponível
             for (Drone drone : drones) {
                 if (drone instanceof DronePessoal && transporte instanceof TransportePessoal) {
                     DronePessoal dronePessoal = (DronePessoal) drone;
                     TransportePessoal transportePessoal = (TransportePessoal) transporte;
                     if (dronePessoal.getQtdMaxPessoas() >= transportePessoal.getQtdPessoas()) {
-                        resultado.append("dados.Transporte Pessoal ")
+                        resultado.append("Transporte Pessoal ")
                                 .append(transporte.getNumero())
-                                .append(" alocado ao dados.Drone Pessoal ")
+                                .append(" alocado ao Drone Pessoal ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transportePessoal.setSituacao(Estado.ALOCADO);
@@ -280,9 +275,9 @@ public class FormTransporte {
                     TransporteCargaViva transporteCargaViva = (TransporteCargaViva) transporte;
 
                     if (droneCargaViva.climatizado()) {
-                        resultado.append("dados.Transporte de Carga Viva ")
+                        resultado.append("Transporte de Carga Viva ")
                                 .append(transporte.getNumero())
-                                .append(" alocado ao dados.Drone de Carga Viva ")
+                                .append(" alocado ao Drone de Carga Viva ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaViva.setSituacao(Estado.ALOCADO);
@@ -293,9 +288,9 @@ public class FormTransporte {
                     TransporteCargaInanimada transporteCargaInanimada = (TransporteCargaInanimada) transporte;
 
                     if (droneCargaInanimada.protegido() || !transporteCargaInanimada.isPerigosa()) {
-                        resultado.append("dados.Transporte de Carga Inanimada ")
+                        resultado.append("Transporte de Carga Inanimada ")
                                 .append(transporte.getNumero())
-                                .append(" alocado ao dados.Drone de Carga Inanimada ")
+                                .append(" alocado ao Drone de Carga Inanimada ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaInanimada.setSituacao(Estado.ALOCADO);
@@ -304,23 +299,22 @@ public class FormTransporte {
                 }
             }
 
-            // Caso não tenha sido alocado, adiciona à lista de não alocados
+            // se não foi alocado, adiciona à lista de não alocados
             if (!alocado) {
                 naoAlocados.add(transporte);
             }
         }
 
-        // Exibe os transportes que não foram alocados
+        // mostra os transportes que não foram alocados
         if (!naoAlocados.isEmpty()) {
             resultado.append("\nTRANSPORTES NÃO ALOCADOS:\n");
             for (Transporte transporte : naoAlocados) {
-                resultado.append("dados.Transporte Nº").append(transporte.getNumero()+", Situação: ").append(transporte.getSituacao()+"\n");
+                resultado.append("Transporte Nº").append(transporte.getNumero()+", Situação: ").append(transporte.getSituacao()+"\n");
             }
         } else {
             resultado.append("\nTodos os transportes foram alocados com sucesso!\n");
         }
 
-        // Exibe o resultado na área de texto
         areaDeTexto.setText(resultado.toString());
     }
 
@@ -392,30 +386,30 @@ public class FormTransporte {
         }
 
         if (transporteEncontrado == null) {
-            JOptionPane.showMessageDialog(painelTransporte, "ERRO: dados.Transporte com o número indicado não encontrado.");
+            JOptionPane.showMessageDialog(painelTransporte, "ERRO: Transporte com o número indicado não encontrado.");
             return;
         }
 
-        // Exibir dados do transporte encontrado
-        String dadosTransporte = String.format("dados.Transporte "+transporteEncontrado.getTipoTransporte()+" Nº: %d" +
+        // mostra dados do transporte encontrado
+        String dadosTransporte = String.format("Transporte "+transporteEncontrado.getTipoTransporte()+" Nº: %d" +
                         "\nCliente: "+transporteEncontrado.getNomeCliente() +
                         "\nDescrição: "+transporteEncontrado.getDescricao() +
                         "\nPeso: "+transporteEncontrado.getPeso()+"kg" +
-                        "\ndados.Drone atribuído: "+transporteEncontrado.getDrone() +
+                        "\nDrone atribuído: "+transporteEncontrado.getDrone() +
                         "\nSituação Atual: %s",
 
                 transporteEncontrado.getNumero(),
                 transporteEncontrado.getSituacao());
         JOptionPane.showMessageDialog(painelTransporte, dadosTransporte);
 
-        // Verificar se pode ser alterado
+        // vê se a situação pode ser alterada
         if (transporteEncontrado.getSituacao() == Estado.TERMINADO ||
                 transporteEncontrado.getSituacao() == Estado.CANCELADO) {
             JOptionPane.showMessageDialog(painelTransporte, "ERRO: A situação do transporte não pode ser alterada (TERMINADO ou CANCELADO).");
             return;
         }
 
-        // Solicitar nova situação
+        // solicitar uma situação nova
         String[] opcoes = {"PENDENTE", "ALOCADO", "CANCELADO","TERMINADO"};
         String novaSituacaoString = (String) JOptionPane.showInputDialog(painelTransporte,
                 "Escolha a nova situação do transporte:",
@@ -432,31 +426,9 @@ public class FormTransporte {
         }
     }
 
-//    public String gerarRelatorioTransportes() {
-//        if (transportes.isEmpty()) {
-//            return "Nenhum transporte cadastrado.\n";
-//        }
-//
-//        StringBuilder builder = new StringBuilder("RELATÓRIO DE TRANSPORTES:\n");
-//        for (dados.Transporte transporte : transportes) {
-//            builder.append("dados.Transporte Nº: ").append(transporte.getNumero())
-//                    .append("\nCliente: ").append(transporte.getNomeCliente())
-//                    .append("\nDescrição: ").append(transporte.getDescricao())
-//                    .append("\nPeso: ").append(transporte.getPeso())
-//                    .append("\nCoordenadas de Origem: ").append(transporte.getLatitudeOrigem())
-//                    .append(", ").append(transporte.getLongitudeOrigem())
-//                    .append("\nCoordenadas de Destino: ").append(transporte.getLatitudeDestino())
-//                    .append(", ").append(transporte.getLongitudeDestino())
-//                    .append("\nSituação: ").append(transporte.getSituacao())
-//                    .append("\nCusto Estimado: ").append(calcularCustoTransporte(transporte))  // Calculate the cost
-//                    .append("\n---\n");
-//        }
-//        return builder.toString();
-//    }
-
     private double calcularCustoTransporte(Transporte transporte) {
         // Implement your cost calculation logic here
-        return 0.0;  // Placeholder value
+        return 0.0;
     }
 
     public ArrayList<Transporte> getTransportes() {
@@ -467,7 +439,7 @@ public class FormTransporte {
         if (transportes != null) {
             this.transportes = transportes;
         } else {
-            this.transportes = new ArrayList<>(); // Initializes if the provided list is null
+            this.transportes = new ArrayList<>();
         }
     }
     private void listarCsv(){
