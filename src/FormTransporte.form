@@ -405,6 +405,26 @@
               <text value="Mostrar Dados"/>
             </properties>
           </component>
+          <component id="94ef3" class="javax.swing.JButton" binding="exportarDadosButton">
+            <constraints>
+              <grid row="13" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+                <preferred-size width="50" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Exportar Dados"/>
+            </properties>
+          </component>
+          <component id="6fea7" class="javax.swing.JButton" binding="importarDadosButton">
+            <constraints>
+              <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+                <preferred-size width="50" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Importar Dados"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <hspacer id="f6844">

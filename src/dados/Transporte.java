@@ -34,6 +34,8 @@ public abstract class Transporte implements Serializable {
 
     public abstract double calcularAcréscimos();
 
+    public abstract String toCsv();
+
     public double calcularDistancia() {
         double raioTerra = 6371; // Raio da Terra em km
         double latDiff = Math.toRadians(latitudeDestino - latitudeOrigem);

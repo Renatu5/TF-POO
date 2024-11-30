@@ -41,7 +41,7 @@ public class FormDrones{
     private JButton botaoRelatorioGeral;
     private JButton botaoSalvarDados;
     private JButton botaoCarregarDados;
-    private FormTransporte formTransporte;
+    private ArrayList<Transporte> transportes;
 
     private ArrayList<Drone> drones = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class FormDrones{
         logo = new JLabel(new ImageIcon("logotipo.png"));
     }
     public FormDrones(Janela janela) {
-        this.formTransporte = null;
+        transportes = new ArrayList<>();
         selecaoTipo.addItem("dados.Drone Pessoal");
         selecaoTipo.addItem("dados.Drone de Carga");
         selecaoCarga.addItem("Inanimada");
@@ -117,7 +117,7 @@ public class FormDrones{
         botaoRelatorioGeral.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarRelatorioGeral(formTransporte);
+                mostrarRelatorioGeral(transportes);
             }
         });
 
@@ -141,8 +141,12 @@ public class FormDrones{
         return drones;
     }
 
-    public void setTransportes(FormTransporte transportes) {
-        this.formTransporte = transportes;
+    public ArrayList<Transporte> getTransportes() {
+        return transportes;
+    }
+
+    public void setTransportes(ArrayList<Transporte> transportes) {
+        this.transportes = transportes;
     }
 
     private void cadastrarDrone() {
@@ -320,9 +324,9 @@ public class FormDrones{
         }
 
 
-    private void mostrarRelatorioGeral(FormTransporte formTransporte) {
+    private void mostrarRelatorioGeral(ArrayList<Transporte> transportes) {
         // Verifica se há dados cadastrados em ambas as listas
-        if (drones.isEmpty() && formTransporte.getTransportes().isEmpty()) {
+        if (drones.isEmpty() && transportes.isEmpty()) {
             JOptionPane.showMessageDialog(painel, "Nenhum dados.Drone ou dados.Transporte cadastrado para gerar o relatório.");
             return;
         }
@@ -366,10 +370,10 @@ public class FormDrones{
 
         // Itera pelos transportes cadastrados em FormTransporte
         builder.append("\nTRANSPORTES:\n");
-        if (formTransporte.getTransportes().isEmpty()) {
+        if (transportes.isEmpty()) {
             builder.append(" - Nenhum dados.Transporte cadastrado.\n");
         } else {
-            for (Transporte transporte : formTransporte.getTransportes()) {
+            for (Transporte transporte : transportes) {
                 builder.append("dados.Transporte ").append(transporte.getTipoTransporte()).append(" N°").append(transporte.getNumero())
                         .append(", Peso: ").append(transporte.getPeso()).append(" Pessoas/kgs")
                         .append(", Distância Total: ").append(transporte.calcularDistancia()).append(" km\n");
@@ -401,7 +405,7 @@ public class FormDrones{
 
             // Salva transportes
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeArquivo + "_transportes.dat"))) {
-                oos.writeObject(formTransporte.getTransportes()); // Obtenha os transportes de FormTransporte
+                oos.writeObject(transportes); // Obtenha os transportes de FormTransporte
             }
 
             JOptionPane.showMessageDialog(painel, "Dados salvos com sucesso!");
@@ -425,7 +429,7 @@ public class FormDrones{
 
             // Carrega transportes
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeArquivo + "_transportes.dat"))) {
-                formTransporte.setTransportes((ArrayList<Transporte>) ois.readObject()); // Atualiza a lista de transportes
+                transportes = (ArrayList<Transporte>) ois.readObject(); // Atualiza a lista de transportes
             }
 
             JOptionPane.showMessageDialog(painel, "Dados carregados com sucesso!");

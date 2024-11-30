@@ -31,6 +31,7 @@ public class Janela extends JFrame {
         this.revalidate(); // Revalida a interface
         this.repaint(); // Re-renderiza a interface
         formTransporte.setDrones(formDrones.getDrones());
+        formTransporte.setTransportes(formDrones.getTransportes());
     }
 
     public void trocarParaForm() {
@@ -39,7 +40,7 @@ public class Janela extends JFrame {
         this.add(painelAtual); // Adiciona o novo painel
         this.revalidate(); // Revalida a interface
         this.repaint();// Re-renderiza a interface
-        formDrones.setTransportes(formTransporte);
+        formDrones.setTransportes(formTransporte.getTransportes());
     }
 }
 

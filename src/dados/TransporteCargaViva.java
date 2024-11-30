@@ -28,4 +28,12 @@ public class TransporteCargaViva extends Transporte implements Serializable {
     public double getTempMax() {
         return temperaturaMaxima;
     }
+
+
+    public String toCsv() {
+        {
+            return "type;Numero Identificador;Nome do Cliente;Descricao;peso;LatitudeOrigem;LatitudeDestino;longitudeOrigem;LongitudeDestino;situacao;temperaturaMinima;temperaturaMaxima;"
+                    +getType()+";"+getNumero()+";"+getNomeCliente()+";"+getDescricao()+";"+getPeso()+";"+getLatitudeOrigem()+";"+getLatitudeDestino()+";"+getLongitudeOrigem()+";"+getLongitudeDestino()+";"+getSituacao()+";"+temperaturaMinima+";"+temperaturaMaxima+";\n";
+        }
+    }
 }

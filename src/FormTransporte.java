@@ -1,11 +1,18 @@
+import Utils.ScannerCSV;
 import dados.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 public class FormTransporte {
     private JPanel painelTransporte;
@@ -44,6 +51,8 @@ public class FormTransporte {
     private JButton botaoProcessar;
     private JButton botaoTrocaJanelaForm;
     private JButton botaoAlterarSituacao;
+    private JButton exportarDadosButton;
+    private JButton importarDadosButton;
     private ArrayList<Transporte> transportes = new ArrayList<>();
     private ArrayList<Drone> drones;
     private Queue<Transporte> transportesPendentes = new LinkedList<>();
@@ -123,6 +132,18 @@ public class FormTransporte {
             }
         });
 
+        importarDadosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                importarDados();
+            }
+        });
+        exportarDadosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportarDados();
+            }
+        });
     }
 
     public void setDrones(ArrayList<Drone> drones){
@@ -184,6 +205,13 @@ public class FormTransporte {
                 }
             }
 
+            for(Transporte t: transportesPendentes){
+                if (t.getNumero() == numero) {
+                    JOptionPane.showMessageDialog(painelTransporte, "ERRO: Número de transporte já cadastrado.");
+                    return;
+                }
+            }
+
             // Criar o transporte com base no tipo selecionado
             Transporte novoTransporte = null;
             if ("Pessoal".equals(tipoTransporte)) {
@@ -197,6 +225,7 @@ public class FormTransporte {
 
             if (novoTransporte != null) {
                 // Adiciona o transporte na fila de pendentes
+                transportesPendentes.add(novoTransporte);
                 transportes.add(novoTransporte);
                 areaDeTexto.setText("dados.Transporte adicionado à fila de pendentes.\n" + novoTransporte);
             } else {
@@ -255,11 +284,10 @@ public class FormTransporte {
 
     private void processarTransportesPendentes() {
         StringBuilder resultado = new StringBuilder("PROCESSAMENTO DE TRANSPORTES PENDENTES:\n");
-
         // Lista temporária para armazenar transportes não alocados
         ArrayList<Transporte> naoAlocados = new ArrayList<>();
         // Percorre cada transporte pendente
-        for (Transporte transporte : transportes) {
+        for (Transporte transporte : transportesPendentes) {
             boolean alocado = false;
             // Tenta alocar o transporte a um drone disponível
             for (Drone drone : drones) {
@@ -273,6 +301,7 @@ public class FormTransporte {
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transportePessoal.setSituacao(Estado.ALOCADO);
+                        transportesPendentes.remove(transporte);
                         break; // Sai do loop de drones após alocação
                     }
                 } else if (drone instanceof DroneCargaViva && transporte instanceof TransporteCargaViva) {
@@ -286,6 +315,7 @@ public class FormTransporte {
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaViva.setSituacao(Estado.ALOCADO);
+                        transportesPendentes.remove(transporte);
                         break;
                     }
                 } else if (drone instanceof DroneCargaInanimada && transporte instanceof TransporteCargaInanimada) {
@@ -299,6 +329,7 @@ public class FormTransporte {
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaInanimada.setSituacao(Estado.ALOCADO);
+                        transportesPendentes.remove(transporte);
                         break;
                     }
                 }
@@ -390,6 +421,12 @@ public class FormTransporte {
                 break;
             }
         }
+        for(Transporte transporte: transportesPendentes){
+            if(transporte.getNumero() == numeroTransporte){
+                transporteEncontrado = transporte;
+                break;
+            }
+        }
 
         if (transporteEncontrado == null) {
             JOptionPane.showMessageDialog(painelTransporte, "ERRO: dados.Transporte com o número indicado não encontrado.");
@@ -426,10 +463,53 @@ public class FormTransporte {
         if (novaSituacaoString != null && !novaSituacaoString.trim().isEmpty()) {
             Estado novaSituacao = Estado.valueOf(novaSituacaoString);
             transporteEncontrado.setSituacao(novaSituacao);
+            if(novaSituacao == Estado.PENDENTE)
+                transportesPendentes.add(transporteEncontrado);
             JOptionPane.showMessageDialog(painelTransporte, "Situação do transporte alterada com sucesso!");
         } else {
             JOptionPane.showMessageDialog(painelTransporte, "ERRO: Nenhuma nova situação foi selecionada.");
         }
+    }
+
+    public void importarDados(){
+        try {
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):");
+            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+                return;
+            }
+            ScannerCSV sc = new ScannerCSV();
+            try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomeArquivo))) {
+                    String line = "";
+                    while ((line = reader.readLine()) != null) {
+                        Scanner scl = new Scanner(line).useDelimiter(";");
+                        System.out.println(scl);
+                        if(sc.readTransportes(scl,transportesPendentes, transportes) != null){
+                        transportes.add(sc.readTransportes(scl,transportesPendentes, transportes));
+                        }
+                    }
+            }catch(Exception e){
+
+            }
+            JOptionPane.showMessageDialog(getPainel(), "Dados carregados com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível carregar os dados.\n" + e.getMessage());
+        }
+    }
+    public void exportarDados(){
+        try{
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV em que deseja salvar os dados(SEM extensão ou '_drones'/'_transportes'):");
+            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+                return;
+            }
+            ScannerCSV sc = new ScannerCSV();
+            sc.writeTransportes(nomeArquivo, transportes);
+            JOptionPane.showMessageDialog(getPainel(), "Dados salvos em "+ nomeArquivo +" com sucesso!");
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível exportar os dados.\n" + e.getMessage());
+        }
+
     }
 
 //    public String gerarRelatorioTransportes() {
@@ -468,11 +548,6 @@ public class FormTransporte {
             this.transportes = transportes;
         } else {
             this.transportes = new ArrayList<>(); // Initializes if the provided list is null
-        }
-    }
-    private void listarCsv(){
-        for(Transporte t : transportes){
-            System.out.println(t.getType() + t.getNumero() + t.getNomeCliente() + t.getDescricao() + t.getPeso() + t.getLatitudeOrigem() + t.getLatitudeDestino() + t.getLongitudeDestino() + t.getSituacao());
         }
     }
 }

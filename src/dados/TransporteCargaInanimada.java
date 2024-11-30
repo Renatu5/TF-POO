@@ -20,4 +20,11 @@ public class TransporteCargaInanimada extends Transporte implements Serializable
     public boolean isPerigosa() {
         return cargaPerigosa;
     }
+
+    public String toCsv() {
+        {
+            return "type;Numero Identificador;Nome do Cliente;Descricao;peso;LatitudeOrigem;LatitudeDestino;longitudeOrigem;LongitudeDestino;situacao;Carga Perigosa\n"
+                    +getType()+";"+getNumero()+";"+getNomeCliente()+";"+getDescricao()+";"+getPeso()+";"+getLatitudeOrigem()+";"+getLatitudeDestino()+";"+getLongitudeOrigem()+";"+getLongitudeDestino()+";"+getSituacao()+";"+isPerigosa()+";\n";
+        }
+    }
 }
