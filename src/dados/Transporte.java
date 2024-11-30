@@ -1,6 +1,8 @@
 package dados;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 public abstract class Transporte implements Serializable {
     private static final long serialVersionUID = 1L;
     private int numero;
@@ -105,17 +107,13 @@ public abstract class Transporte implements Serializable {
 
     @Override
     public String toString() {
-        return ("dados.Transporte N°" + numero
-                + "\nTipo: " + tipoTransporte +
+        return ("Transporte N°" + numero +
+                "\nTipo: " + tipoTransporte +
                 "\nCliente: " + nomeCliente +
                 "\nDescrição: " + descricao +
-                "\nPeso: " + peso +
-                "\nSituação: " + situacao +
-                "\ndados.Drone atribuído: " + drone
-                );
-    }
-
-    public void setDrone(Drone droneDisponivel) {
+                "\nPeso: " + peso + "kg"+
+                "\nDrone atribuído: " + Objects.toString(drone, "Nenhum"))+
+                "\nSituação: " + situacao;
 
     }
 

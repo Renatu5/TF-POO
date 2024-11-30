@@ -249,7 +249,7 @@ public class FormTransporte {
     }
 
     private void processarTransportesPendentes() {
-        StringBuilder resultado = new StringBuilder("PROCESSAMENTO DE TRANSPORTES PENDENTES:\n");
+        StringBuilder resultado = new StringBuilder("PROCESSAMENTO DE TRANSPORTES PENDENTES\n");
 
         // uma lista temporária para armazenar transportes não alocados
         ArrayList<Transporte> naoAlocados = new ArrayList<>();
@@ -264,7 +264,7 @@ public class FormTransporte {
                     if (dronePessoal.getQtdMaxPessoas() >= transportePessoal.getQtdPessoas()) {
                         resultado.append("Transporte Pessoal ")
                                 .append(transporte.getNumero())
-                                .append(" alocado ao Drone Pessoal ")
+                                .append(" vinculado ao Drone Pessoal ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transportePessoal.setSituacao(Estado.ALOCADO);
@@ -274,10 +274,10 @@ public class FormTransporte {
                     DroneCargaViva droneCargaViva = (DroneCargaViva) drone;
                     TransporteCargaViva transporteCargaViva = (TransporteCargaViva) transporte;
 
-                    if (droneCargaViva.climatizado()) {
+                    if ((transporteCargaViva.getPeso()<=((DroneCargaViva) drone).getPesoMaximo())) {
                         resultado.append("Transporte de Carga Viva ")
                                 .append(transporte.getNumero())
-                                .append(" alocado ao Drone de Carga Viva ")
+                                .append(" vinculado ao Drone de Carga Viva ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaViva.setSituacao(Estado.ALOCADO);
@@ -287,10 +287,18 @@ public class FormTransporte {
                     DroneCargaInanimada droneCargaInanimada = (DroneCargaInanimada) drone;
                     TransporteCargaInanimada transporteCargaInanimada = (TransporteCargaInanimada) transporte;
 
-                    if (droneCargaInanimada.protegido() || !transporteCargaInanimada.isPerigosa()) {
+                    if (!droneCargaInanimada.protegido() && !transporteCargaInanimada.isPerigosa()) {
                         resultado.append("Transporte de Carga Inanimada ")
                                 .append(transporte.getNumero())
-                                .append(" alocado ao Drone de Carga Inanimada ")
+                                .append(" vinculado ao Drone de Carga Inanimada ")
+                                .append(drone.getCodigo()).append("\n");
+                        alocado = true;
+                        transporteCargaInanimada.setSituacao(Estado.ALOCADO);
+                        break;
+                    } if (droneCargaInanimada.protegido() && transporteCargaInanimada.isPerigosa()) {
+                        resultado.append("Transporte de Carga Inanimada ")
+                                .append(transporte.getNumero())
+                                .append(" vinculado ao Drone de Carga Inanimada ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaInanimada.setSituacao(Estado.ALOCADO);

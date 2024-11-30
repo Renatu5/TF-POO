@@ -25,7 +25,7 @@
         <properties>
           <font name="Bebas Neue" size="18" style="0"/>
           <foreground color="-16747009"/>
-          <text value="Tipo de dados.Drone"/>
+          <text value="Tipo de Drone"/>
           <verticalAlignment value="1"/>
           <verticalTextPosition value="1"/>
         </properties>
@@ -79,7 +79,7 @@
         <properties>
           <font name="Bebas Neue" size="18" style="0"/>
           <foreground color="-16747009"/>
-          <text value="Código (6 dígitos)"/>
+          <text value="Código"/>
           <verticalAlignment value="1"/>
           <verticalTextPosition value="1"/>
         </properties>
@@ -282,16 +282,6 @@
           <visible value="false"/>
         </properties>
       </component>
-      <component id="88a8c" class="javax.swing.JButton" binding="botaoTrocaJanela">
-        <constraints>
-          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
-            <preferred-size width="50" height="30"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Ir para Menu de Transportes"/>
-        </properties>
-      </component>
       <component id="a516d" class="javax.swing.JButton" binding="botaoSair">
         <constraints>
           <grid row="12" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="2" use-parent-layout="false">
@@ -305,7 +295,7 @@
       </component>
       <component id="9be11" class="javax.swing.JButton" binding="botaoRelatorioGeral">
         <constraints>
-          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
             <preferred-size width="50" height="30"/>
           </grid>
         </constraints>
@@ -325,12 +315,22 @@
       </component>
       <component id="50f03" class="javax.swing.JButton" binding="botaoLimpar">
         <constraints>
-          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="2" use-parent-layout="false">
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="2" use-parent-layout="false">
             <preferred-size width="194" height="34"/>
           </grid>
         </constraints>
         <properties>
           <text value="Limpar"/>
+        </properties>
+      </component>
+      <component id="88a8c" class="javax.swing.JButton" binding="botaoTrocaJanela">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+            <preferred-size width="50" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Ir para Menu de Transportes"/>
         </properties>
       </component>
       <component id="df026" class="javax.swing.JButton" binding="botaoSalvarDados">

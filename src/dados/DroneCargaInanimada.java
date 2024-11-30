@@ -21,11 +21,16 @@ public class DroneCargaInanimada extends DroneCarga implements Serializable {
 
     @Override
     public String toString() {
-        return super.toString() + "dados.DroneCargaInanimada protecao=" + protecao + "]";
+        return "Drone de Carga Inanimada N°" + getCodigo() +
+                "\nCusto Fixo: " +"R$"+ getCustoFixo() +
+                "\nAutonomia: " + getAutonomia() + " minutos"+
+                "\nCapacidade: " + getPesoMaximo() + " kg" +
+                "\nProtegido: " + (protegido() ? "sim" : "não");
     }
 
     @Override
     public double calcularCustoKm() {
         return 0;
     }
+
 }

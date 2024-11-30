@@ -21,8 +21,13 @@ public class DroneCargaViva extends DroneCarga implements Serializable {
 
     @Override
     public String toString() {
-        return super.toString() + " | dados.DroneCargaViva [climatizado=" + climatizado + "]";
-    }
+        return  "Drone de Carga Viva N°" + getCodigo() +
+                "\nCusto Fixo: " +"R$"+getCustoFixo() +
+                "\nAutonomia: " + getAutonomia() + " minutos"+
+                "\nCapacidade: " + getPesoMaximo() + " kg" +
+                "\nClimatizado: " + (climatizado() ? "sim" : "não");
+        }
+
 
     @Override
     public double calcularCustoKm() {

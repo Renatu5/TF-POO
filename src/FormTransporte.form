@@ -123,7 +123,7 @@
           </vspacer>
           <component id="af250" class="javax.swing.JButton" binding="botaoCadastro" default-binding="true">
             <constraints>
-              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
                 <preferred-size width="50" height="30"/>
               </grid>
             </constraints>
@@ -265,7 +265,7 @@
             <properties>
               <font name="Bebas Neue" size="18" style="0"/>
               <foreground color="-16747009"/>
-              <text value="Tipo de dados.Transporte"/>
+              <text value="Tipo de Transporte"/>
               <verticalAlignment value="1"/>
               <verticalTextPosition value="1"/>
             </properties>
@@ -357,7 +357,7 @@
           </component>
           <component id="1ce7f" class="javax.swing.JButton" binding="botaoProcessar">
             <constraints>
-              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
                 <preferred-size width="50" height="30"/>
               </grid>
             </constraints>
@@ -367,7 +367,7 @@
           </component>
           <component id="a2be7" class="javax.swing.JButton" binding="botaoAlterarSituacao">
             <constraints>
-              <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
                 <preferred-size width="50" height="30"/>
               </grid>
             </constraints>
@@ -377,7 +377,7 @@
           </component>
           <component id="1402b" class="javax.swing.JButton" binding="botaoLimpar">
             <constraints>
-              <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="2" use-parent-layout="false">
+              <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="2" use-parent-layout="false">
                 <preferred-size width="194" height="34"/>
               </grid>
             </constraints>
@@ -385,24 +385,24 @@
               <text value="Limpar"/>
             </properties>
           </component>
-          <component id="e877e" class="javax.swing.JButton" binding="botaoTrocaJanelaForm">
-            <constraints>
-              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
-                <preferred-size width="50" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="Ir para Menu de Drones"/>
-            </properties>
-          </component>
           <component id="6a7c6" class="javax.swing.JButton" binding="botaoDados">
             <constraints>
-              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
                 <preferred-size width="50" height="30"/>
               </grid>
             </constraints>
             <properties>
               <text value="Mostrar Dados"/>
+            </properties>
+          </component>
+          <component id="e877e" class="javax.swing.JButton" binding="botaoTrocaJanelaForm">
+            <constraints>
+              <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="2" use-parent-layout="false">
+                <preferred-size width="50" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Ir para Menu de Drones"/>
             </properties>
           </component>
         </children>

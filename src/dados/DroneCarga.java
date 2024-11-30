@@ -17,10 +17,7 @@ public abstract class DroneCarga extends Drone {
     // Método abstrato a ser implementado pelas subclasses
     public abstract boolean verificaCompatibilidade(double peso);
 
-    @Override
-    public String toString() {
-        return super.toString() + " | dados.DroneCarga [pesoMaximo=" + pesoMaximo + "]";
-    }
+
 
 
 }

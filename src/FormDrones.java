@@ -181,11 +181,6 @@ public class FormDrones{
                 return;
             }
 
-            if (codigo.length() != 6 || !codigo.chars().allMatch(Character::isDigit)) {
-                JOptionPane.showMessageDialog(painel, "ERRO: Código inválido. Deve ter exatamente 6 dígitos.");
-                return;
-            }
-
             // duplicidade de código
             for (Drone drone : drones) {
                 if (drone.getCodigo() == Integer.parseInt(codigo)) {
