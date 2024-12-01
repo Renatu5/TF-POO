@@ -1,7 +1,10 @@
 package dados;
 
 import java.io.Serializable;
+<<<<<<< Updated upstream
 import java.util.Objects;
+=======
+>>>>>>> Stashed changes
 
 public abstract class Transporte implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -93,7 +96,7 @@ public abstract class Transporte implements Serializable {
         return longitudeDestino;
     }
 
-    public String getTipoTransporte(){
+    public String getTipoTransporte() {
         return tipoTransporte;
     }
 
@@ -118,9 +121,19 @@ public abstract class Transporte implements Serializable {
                 "\nTipo: " + tipoTransporte +
                 "\nCliente: " + nomeCliente +
                 "\nDescrição: " + descricao +
+<<<<<<< Updated upstream
                 "\nPeso: " + peso + "kg"+
                 "\nDrone atribuído: " + Objects.toString(drone, "Nenhum"))+
                 "\nSituação: " + situacao;
+=======
+                "\nPeso: " + peso +
+                "\nSituação: " + situacao +
+                "\ndados.Drone atribuído: " + drone
+        );
+    }
+
+    public void setDrone(Drone droneDisponivel) {
+>>>>>>> Stashed changes
 
     }
 

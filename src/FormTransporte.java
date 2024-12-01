@@ -146,7 +146,7 @@ public class FormTransporte {
         });
     }
 
-    public void setDrones(ArrayList<Drone> drones){
+    public void setDrones(ArrayList<Drone> drones) {
         this.drones = drones;
     }
 
@@ -205,7 +205,7 @@ public class FormTransporte {
                 }
             }
 
-            for(Transporte t: transportesPendentes){
+            for (Transporte t : transportesPendentes) {
                 if (t.getNumero() == numero) {
                     JOptionPane.showMessageDialog(painelTransporte, "ERRO: Número de transporte já cadastrado.");
                     return;
@@ -345,7 +345,7 @@ public class FormTransporte {
         if (!naoAlocados.isEmpty()) {
             resultado.append("\nTRANSPORTES NÃO ALOCADOS:\n");
             for (Transporte transporte : naoAlocados) {
-                resultado.append("dados.Transporte Nº").append(transporte.getNumero()+", Situação: ").append(transporte.getSituacao()+"\n");
+                resultado.append("dados.Transporte Nº").append(transporte.getNumero() + ", Situação: ").append(transporte.getSituacao() + "\n");
             }
         } else {
             resultado.append("\nTodos os transportes foram alocados com sucesso!\n");
@@ -421,8 +421,8 @@ public class FormTransporte {
                 break;
             }
         }
-        for(Transporte transporte: transportesPendentes){
-            if(transporte.getNumero() == numeroTransporte){
+        for (Transporte transporte : transportesPendentes) {
+            if (transporte.getNumero() == numeroTransporte) {
                 transporteEncontrado = transporte;
                 break;
             }
@@ -434,11 +434,11 @@ public class FormTransporte {
         }
 
         // Exibir dados do transporte encontrado
-        String dadosTransporte = String.format("dados.Transporte "+transporteEncontrado.getTipoTransporte()+" Nº: %d" +
-                        "\nCliente: "+transporteEncontrado.getNomeCliente() +
-                        "\nDescrição: "+transporteEncontrado.getDescricao() +
-                        "\nPeso: "+transporteEncontrado.getPeso()+"kg" +
-                        "\ndados.Drone atribuído: "+transporteEncontrado.getDrone() +
+        String dadosTransporte = String.format("dados.Transporte " + transporteEncontrado.getTipoTransporte() + " Nº: %d" +
+                        "\nCliente: " + transporteEncontrado.getNomeCliente() +
+                        "\nDescrição: " + transporteEncontrado.getDescricao() +
+                        "\nPeso: " + transporteEncontrado.getPeso() + "kg" +
+                        "\ndados.Drone atribuído: " + transporteEncontrado.getDrone() +
                         "\nSituação Atual: %s",
 
                 transporteEncontrado.getNumero(),
@@ -453,7 +453,7 @@ public class FormTransporte {
         }
 
         // Solicitar nova situação
-        String[] opcoes = {"PENDENTE", "ALOCADO", "CANCELADO","TERMINADO"};
+        String[] opcoes = {"PENDENTE", "ALOCADO", "CANCELADO", "TERMINADO"};
         String novaSituacaoString = (String) JOptionPane.showInputDialog(painelTransporte,
                 "Escolha a nova situação do transporte:",
                 "Alterar Situação",
@@ -463,7 +463,7 @@ public class FormTransporte {
         if (novaSituacaoString != null && !novaSituacaoString.trim().isEmpty()) {
             Estado novaSituacao = Estado.valueOf(novaSituacaoString);
             transporteEncontrado.setSituacao(novaSituacao);
-            if(novaSituacao == Estado.PENDENTE)
+            if (novaSituacao == Estado.PENDENTE)
                 transportesPendentes.add(transporteEncontrado);
             JOptionPane.showMessageDialog(painelTransporte, "Situação do transporte alterada com sucesso!");
         } else {
@@ -471,6 +471,7 @@ public class FormTransporte {
         }
     }
 
+<<<<<<< Updated upstream
 //    public void importarDados(){
 //        try {
 //            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):");
@@ -499,14 +500,35 @@ public class FormTransporte {
     public void exportarDados(){
         try{
             String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV em que deseja salvar os dados(SEM extensão ou '_drones'/'_transportes'):");
+=======
+    public void importarDados() {
+        try {
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):") + ".CSV";
+            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+                return;
+            }
+            ScannerCSV sc = new ScannerCSV();
+            transportesPendentes.add(sc.readTransportes(nomeArquivo, transportes));
+            transportes.add(sc.readTransportes(nomeArquivo, transportes));
+            JOptionPane.showMessageDialog(getPainel(), "Dados carregados com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível carregar os dados.\n" + e.getMessage());
+        }
+    }
+
+    public void exportarDados() {
+        try {
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV em que deseja salvar os dados(SEM extensão ou '_drones'/'_transportes'):") + ".CSV";
+>>>>>>> Stashed changes
             if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
                 return;
             }
             ScannerCSV sc = new ScannerCSV();
             sc.writeTransportes(nomeArquivo, transportes);
-            JOptionPane.showMessageDialog(getPainel(), "Dados salvos em "+ nomeArquivo +" com sucesso!");
-        }catch (Exception e){
+            JOptionPane.showMessageDialog(getPainel(), "Dados salvos em " + nomeArquivo + " com sucesso!");
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível exportar os dados.\n" + e.getMessage());
         }
 

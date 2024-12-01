@@ -17,15 +17,25 @@ public class ScannerCSV {
     private Path output;
 
     public void writeTransportes(String i, ArrayList<Transporte> transportes) {
+        System.out.println(i);
         this.input = Paths.get(i);
+<<<<<<< Updated upstream
+=======
+        System.out.println(this.input);
+>>>>>>> Stashed changes
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(input, StandardCharsets.UTF_8))) {
             int count = 0;
             while (count < transportes.size()) {
                 writer.write(transportes.get(count).toCsv());
+<<<<<<< Updated upstream
+=======
+                System.out.println(transportes.get(count).toCsv());
+>>>>>>> Stashed changes
                 count++;
             }
         } catch (Exception e) {
             System.err.format("%s %n", e);
+            System.out.println("AAAAAAAAAAAAAAAAAAAA");
         }
     }
 
@@ -56,6 +66,10 @@ public class ScannerCSV {
                                 nomeCliente, descricao, peso,
                                 latitudeOrigem, longitudeDestino, latitudeDestino,
                                 longitudeDestino, qtdPessoas);
+<<<<<<< Updated upstream
+=======
+                        System.out.println(tp);
+>>>>>>> Stashed changes
                         return tp;
                     }
                     if (type == 2) {
@@ -77,6 +91,10 @@ public class ScannerCSV {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+<<<<<<< Updated upstream
+=======
+                System.out.println("ta caindo fora do IF");
+>>>>>>> Stashed changes
             }
         } catch (Exception e) {
             System.err.format("%s %n", e);
