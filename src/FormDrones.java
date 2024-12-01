@@ -41,7 +41,7 @@ public class FormDrones{
     private JButton botaoRelatorioGeral;
     private JButton botaoSalvarDados;
     private JButton botaoCarregarDados;
-    private FormTransporte formTransporte;
+    private ArrayList<Transporte> transportes;
 
     private ArrayList<Drone> drones = new ArrayList<>();
 
@@ -54,9 +54,9 @@ public class FormDrones{
         logo = new JLabel(new ImageIcon("logotipo.png"));
     }
     public FormDrones(Janela janela) {
-        this.formTransporte = null;
-        selecaoTipo.addItem("Drone Pessoal");
-        selecaoTipo.addItem("Drone de Carga");
+        transportes = new ArrayList<>();
+        selecaoTipo.addItem("dados.Drone Pessoal");
+        selecaoTipo.addItem("dados.Drone de Carga");
         selecaoCarga.addItem("Inanimada");
         selecaoCarga.addItem("Viva");
 
@@ -70,6 +70,7 @@ public class FormDrones{
             }
         });
 
+        // Opcionalmente, adicionar um verificador de entrada para validar o input baseado no tipo selecionado
         campoCapacidadeQuantidade.setInputVerifier(new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
@@ -88,7 +89,7 @@ public class FormDrones{
         botaoTrocaJanela.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                janela.trocarParaFormTransporte();
+                janela.trocarParaFormTransporte(); // Troca para a tela FormTransporte
             }
         });
 
@@ -116,7 +117,7 @@ public class FormDrones{
         botaoRelatorioGeral.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarRelatorioGeral(formTransporte);
+                mostrarRelatorioGeral(transportes);
             }
         });
 
@@ -140,8 +141,12 @@ public class FormDrones{
         return drones;
     }
 
-    public void setTransportes(FormTransporte transportes) {
-        this.formTransporte = transportes;
+    public ArrayList<Transporte> getTransportes() {
+        return transportes;
+    }
+
+    public void setTransportes(ArrayList<Transporte> transportes) {
+        this.transportes = transportes;
     }
 
     private void cadastrarDrone() {
@@ -149,6 +154,7 @@ public class FormDrones{
             String codigo = campoCodigo.getText().trim();
             String tipo = (String) selecaoTipo.getSelectedItem();
 
+            // Verificar campos obrigatórios
             if (codigo.isEmpty() || campoCapacidadeQuantidade.getText().trim().isEmpty() ||
                     campoAutonomia.getText().trim().isEmpty() || campoCusto.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(painel, "ERRO: Todos os campos devem estar preenchidos.");
@@ -160,6 +166,7 @@ public class FormDrones{
             double custo;
             boolean disponivel = true;
 
+            // Validação dos campos numéricos
             try {
                 pesoMaximo = Double.parseDouble(campoCapacidadeQuantidade.getText().trim());
             } catch (NumberFormatException e) {
@@ -181,21 +188,27 @@ public class FormDrones{
                 return;
             }
 
-            // duplicidade de código
+            // Verifica se o código é válido (6 dígitos numéricos)
+            if (codigo.length() != 6 || !codigo.chars().allMatch(Character::isDigit)) {
+                JOptionPane.showMessageDialog(painel, "ERRO: Código inválido. Deve ter exatamente 6 dígitos.");
+                return;
+            }
+
+            // Verificar duplicidade de código
             for (Drone drone : drones) {
                 if (drone.getCodigo() == Integer.parseInt(codigo)) {
-                    JOptionPane.showMessageDialog(painel, "ERRO: Código de Drone já cadastrado.");
+                    JOptionPane.showMessageDialog(painel, "ERRO: Código de dados.Drone já cadastrado.");
                     return;
                 }
             }
 
             int pesoMaximoInt = (int) pesoMaximo;
 
-            // drone conforme o tipo selecionado
+            // Criar o drone conforme o tipo selecionado
             Drone novoDrone = null;
-            if ("Drone Pessoal".equals(tipo)) {
+            if ("dados.Drone Pessoal".equals(tipo)) {
                 novoDrone = new DronePessoal(Integer.parseInt(codigo), custo, autonomia, pesoMaximoInt, disponivel);
-            } else if ("Drone de Carga".equals(tipo)) {
+            } else if ("dados.Drone de Carga".equals(tipo)) {
                 String tipoCarga = (String) selecaoCarga.getSelectedItem();
                 boolean protegido = checkboxCargaInanimada.isSelected();
                 boolean climatizado = checkboxCargaViva.isSelected();
@@ -215,11 +228,11 @@ public class FormDrones{
                 }
             }
 
-            // adicionar o drone na lista
+            // Adicionar o drone na lista
             if (novoDrone != null) {
                 drones.add(novoDrone);
                 drones.sort(Comparator.comparingInt(Drone::getCodigo));
-                areaDeTexto.setText("Drone cadastrado com sucesso!\n" + novoDrone);
+                areaDeTexto.setText("dados.Drone cadastrado com sucesso!\n" + novoDrone);
             } else {
                 JOptionPane.showMessageDialog(painel, "ERRO: Não foi possível cadastrar o drone.");
             }
@@ -244,7 +257,7 @@ public class FormDrones{
     //mostrar cadastros
     private void mostrarDados() {
         if (drones.isEmpty()) {
-            JOptionPane.showMessageDialog(painel, "Nenhum Drone cadastrado.");
+            JOptionPane.showMessageDialog(painel, "Nenhum dados.Drone cadastrado.");
             return;
         }
 
@@ -252,13 +265,13 @@ public class FormDrones{
         for (Drone drone : drones) {
             if (drone instanceof DronePessoal) {
                 DronePessoal dp = (DronePessoal) drone;
-                builder.append("Drone Pessoal - Código: ").append(dp.getCodigo())
+                builder.append("dados.Drone Pessoal - Código: ").append(dp.getCodigo())
                         .append(", Custo Fixo: ").append(dp.getCustoFixo())
                         .append(", Autonomia: ").append(dp.getAutonomia())
                         .append(", Capacidade de Pessoas: ").append(dp.getQtdMaxPessoas()).append("\n");
             } else if (drone instanceof DroneCargaInanimada) {
                 DroneCargaInanimada dci = (DroneCargaInanimada) drone;
-                builder.append("Drone de Carga (Inanimada) - Código: ").append(dci.getCodigo())
+                builder.append("dados.Drone de Carga (Inanimada) - Código: ").append(dci.getCodigo())
                         .append(", Custo Fixo: ").append(dci.getCustoFixo())
                         .append(", Autonomia: ").append(dci.getAutonomia())
                         .append(", Proteção: ").append(dci.protegido() ? "Sim" : "Não")
@@ -266,7 +279,7 @@ public class FormDrones{
 
             } else if (drone instanceof DroneCargaViva) {
                 DroneCargaViva dcv = (DroneCargaViva) drone;
-                builder.append("Drone de Carga (Viva) - Código: ").append(dcv.getCodigo())
+                builder.append("dados.Drone de Carga (Viva) - Código: ").append(dcv.getCodigo())
                         .append(", Custo Fixo: ").append(dcv.getCustoFixo())
                         .append(", Autonomia: ").append(dcv.getAutonomia())
                         .append(", Climatizado: ").append(dcv.climatizado() ? "Sim" : "Não")
@@ -279,14 +292,14 @@ public class FormDrones{
 
     private void atualizarCampos() {
         String tipoSelecionado = (String) selecaoTipo.getSelectedItem();
-        if ("Drone Pessoal".equals(tipoSelecionado)) {
+        if ("dados.Drone Pessoal".equals(tipoSelecionado)) {
             labelCapacidadeQuantidade.setText("Capacidade (Nº de Pessoas):");
             labelExtras.setVisible(false);
             labelTipoCarga.setVisible(false);
             selecaoCarga.setVisible(false);
             checkboxCargaInanimada.setVisible(false);
             checkboxCargaViva.setVisible(false);
-        } else if ("Drone de Carga".equals(tipoSelecionado)) {
+        } else if ("dados.Drone de Carga".equals(tipoSelecionado)) {
             labelCapacidadeQuantidade.setText("Capacidade (Peso em Kg):");
             labelExtras.setVisible(true);
             labelTipoCarga.setVisible(true);
@@ -302,49 +315,51 @@ public class FormDrones{
     private boolean verificarEntrada() {
         String tipoSelecionado = (String) selecaoTipo.getSelectedItem();
         String texto = campoCapacidadeQuantidade.getText();
-            if ("Drone Pessoal".equals(tipoSelecionado)) {
+            if ("dados.Drone Pessoal".equals(tipoSelecionado)) {
                 Integer.parseInt(texto); // Validar como int
-            } else if ("Drone de Carga".equals(tipoSelecionado)) {
+            } else if ("dados.Drone de Carga".equals(tipoSelecionado)) {
                 Double.parseDouble(texto); // Validar como double
             }
             return true;
         }
 
 
-    private void mostrarRelatorioGeral(FormTransporte formTransporte) {
+    private void mostrarRelatorioGeral(ArrayList<Transporte> transportes) {
         // Verifica se há dados cadastrados em ambas as listas
-        if (drones.isEmpty() && formTransporte.getTransportes().isEmpty()) {
-            JOptionPane.showMessageDialog(painel, "Nenhum Drone ou Transporte cadastrado para gerar o relatório.");
+        if (drones.isEmpty() && transportes.isEmpty()) {
+            JOptionPane.showMessageDialog(painel, "Nenhum dados.Drone ou dados.Transporte cadastrado para gerar o relatório.");
             return;
         }
 
+        // StringBuilder para consolidar os dados
         StringBuilder builder = new StringBuilder("RELATÓRIO GERAL:\n\n");
 
-        double custoTotalDrones = 0;
-        double custoTotalTransportes = 0;
+        double custoTotalDrones = 0; // Para cálculo do custo total dos drones
+        double custoTotalTransportes = 0; // Para cálculo do custo total dos transportes
 
+        // Itera pelos drones cadastrados
         builder.append("DRONES:\n");
         if (drones.isEmpty()) {
-            builder.append(" - Nenhum Drone cadastrado.\n\n");
+            builder.append(" - Nenhum dados.Drone cadastrado.\n\n");
         } else {
             for (Drone drone : drones) {
                 if (drone instanceof DronePessoal) {
                     DronePessoal dp = (DronePessoal) drone;
-                    builder.append("Drone Pessoal N°").append(dp.getCodigo())
+                    builder.append("dados.Drone Pessoal N°").append(dp.getCodigo())
                             .append(", Custo Fixo: R$ ").append(dp.getCustoFixo())
                             .append(", Autonomia: ").append(dp.getAutonomia()).append(" km")
                             .append(", Capacidade (Nº de Pessoas): ").append(dp.getQtdMaxPessoas()).append("\n");
                     custoTotalDrones += dp.getCustoFixo();
                 } else if (drone instanceof DroneCargaInanimada) {
                     DroneCargaInanimada dci = (DroneCargaInanimada) drone;
-                    builder.append("Drone de Carga Inanimada Nº:").append(dci.getCodigo())
+                    builder.append("dados.Drone de Carga Inanimada Nº:").append(dci.getCodigo())
                             .append(", Custo Fixo: R$ ").append(dci.getCustoFixo())
                             .append(", Autonomia: ").append(dci.getAutonomia()).append(" km")
                             .append(", Proteção: ").append(dci.protegido() ? "Sim" : "Não").append("\n");
                     custoTotalDrones += dci.getCustoFixo();
                 } else if (drone instanceof DroneCargaViva) {
                     DroneCargaViva dcv = (DroneCargaViva) drone;
-                    builder.append("Drone de Carga Viva Nº:").append(dcv.getCodigo())
+                    builder.append("dados.Drone de Carga Viva Nº:").append(dcv.getCodigo())
                             .append(", Custo Fixo: R$ ").append(dcv.getCustoFixo())
                             .append(", Autonomia: ").append(dcv.getAutonomia()).append(" km")
                             .append(", Climatizado: ").append(dcv.climatizado() ? "Sim" : "Não").append("\n");
@@ -353,12 +368,13 @@ public class FormDrones{
             }
         }
 
+        // Itera pelos transportes cadastrados em FormTransporte
         builder.append("\nTRANSPORTES:\n");
-        if (formTransporte.getTransportes().isEmpty()) {
-            builder.append(" - Nenhum Transporte cadastrado.\n");
+        if (transportes.isEmpty()) {
+            builder.append(" - Nenhum dados.Transporte cadastrado.\n");
         } else {
-            for (Transporte transporte : formTransporte.getTransportes()) {
-                builder.append("Transporte ").append(transporte.getTipoTransporte()).append(" N°").append(transporte.getNumero())
+            for (Transporte transporte : transportes) {
+                builder.append("dados.Transporte ").append(transporte.getTipoTransporte()).append(" N°").append(transporte.getNumero())
                         .append(", Peso: ").append(transporte.getPeso()).append(" Pessoas/kgs")
                         .append(", Distância Total: ").append(transporte.calcularDistancia()).append(" km\n");
             }
@@ -389,7 +405,7 @@ public class FormDrones{
 
             // Salva transportes
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeArquivo + "_transportes.dat"))) {
-                oos.writeObject(formTransporte.getTransportes()); // Obtenha os transportes de FormTransporte
+                oos.writeObject(transportes); // Obtenha os transportes de FormTransporte
             }
 
             JOptionPane.showMessageDialog(painel, "Dados salvos com sucesso!");
@@ -413,7 +429,7 @@ public class FormDrones{
 
             // Carrega transportes
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeArquivo + "_transportes.dat"))) {
-                formTransporte.setTransportes((ArrayList<Transporte>) ois.readObject()); // Atualiza a lista de transportes
+                transportes = (ArrayList<Transporte>) ois.readObject(); // Atualiza a lista de transportes
             }
 
             JOptionPane.showMessageDialog(painel, "Dados carregados com sucesso!");

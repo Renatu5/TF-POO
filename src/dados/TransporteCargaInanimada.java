@@ -1,6 +1,7 @@
 package dados;
 
 import java.io.Serializable;
+
 public class TransporteCargaInanimada extends Transporte implements Serializable {
     private static final long serialVersionUID = 1L;
     private boolean cargaPerigosa;
@@ -22,5 +23,12 @@ public class TransporteCargaInanimada extends Transporte implements Serializable
 
     public boolean isPerigosa() {
         return cargaPerigosa;
+    }
+
+    public String toCsv() {
+        {
+            return "type;Numero Identificador;Nome do Cliente;Descricao;peso;LatitudeOrigem;LatitudeDestino;longitudeOrigem;LongitudeDestino;Carga Perigosa\n"
+                    + getType() + ";" + getNumero() + ";" + getNomeCliente() + ";" + getDescricao() + ";" + getPeso() + ";" + getLatitudeOrigem() + ";" + getLatitudeDestino() + ";" + getLongitudeOrigem() + ";" + getLongitudeDestino() + ";" + isPerigosa() + ";\n";
+        }
     }
 }

@@ -1,11 +1,18 @@
+import Utils.ScannerCSV;
 import dados.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 public class FormTransporte {
     private JPanel painelTransporte;
@@ -44,8 +51,11 @@ public class FormTransporte {
     private JButton botaoProcessar;
     private JButton botaoTrocaJanelaForm;
     private JButton botaoAlterarSituacao;
+    private JButton exportarDadosButton;
+    private JButton importarDadosButton;
     private ArrayList<Transporte> transportes = new ArrayList<>();
     private ArrayList<Drone> drones;
+    private Queue<Transporte> transportesPendentes = new LinkedList<>();
 
     private void createUIComponents() {
         logotipo = new JLabel(new ImageIcon("logo.png"));
@@ -111,7 +121,7 @@ public class FormTransporte {
         botaoTrocaJanelaForm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                janela.trocarParaForm();
+                janela.trocarParaForm(); // Troca para a tela FormTransporte
             }
         });
 
@@ -122,14 +132,27 @@ public class FormTransporte {
             }
         });
 
+        importarDadosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                importarDados();
+            }
+        });
+        exportarDadosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportarDados();
+            }
+        });
     }
 
-    public void setDrones(ArrayList<Drone> drones){
+    public void setDrones(ArrayList<Drone> drones) {
         this.drones = drones;
     }
 
     private void cadastrarTransporte() {
         try {
+            // Validações básicas
             String numeroStr = campoNumero.getText().trim();
             String nomeCliente = campoCliente.getText().trim();
             String descricao = campoDescricao.getText().trim();
@@ -145,6 +168,7 @@ public class FormTransporte {
                 return;
             }
 
+            // Validação numérica e conversão
             int numero, pessoas;
             double peso, latOrigem, lonOrigem, latDestino, lonDestino, tempMin = 0.0, tempMax = 0.0;
 
@@ -152,6 +176,7 @@ public class FormTransporte {
                 numero = Integer.parseInt(numeroStr);
                 pessoas = Integer.parseInt(campoTempMinEPessoas.getText().trim());
 
+                // Get common information regardless of transport type
                 peso = Double.parseDouble(campoPeso.getText().trim());
                 latOrigem = Double.parseDouble(campoLatOrigem.getText().trim());
                 lonOrigem = Double.parseDouble(campoLonOrigem.getText().trim());
@@ -161,6 +186,7 @@ public class FormTransporte {
                 validarLatLon(latOrigem, lonOrigem, "Origem");
                 validarLatLon(latDestino, lonDestino, "Destino");
 
+                // Check the transport type and get extra data if necessary
                 if ("Carga Viva".equals(tipoTransporte)) {
                     tempMin = Double.parseDouble(campoTempMinEPessoas.getText().trim());
                     tempMax = Double.parseDouble(campoTempMax.getText().trim());
@@ -171,7 +197,7 @@ public class FormTransporte {
                 return;
             }
 
-            // duplicidade de número
+            // Verificar duplicidade de número
             for (Transporte t : transportes) {
                 if (t.getNumero() == numero) {
                     JOptionPane.showMessageDialog(painelTransporte, "ERRO: Número de transporte já cadastrado.");
@@ -179,7 +205,14 @@ public class FormTransporte {
                 }
             }
 
-            // cria o transporte com base no tipo selecionado
+            for (Transporte t : transportesPendentes) {
+                if (t.getNumero() == numero) {
+                    JOptionPane.showMessageDialog(painelTransporte, "ERRO: Número de transporte já cadastrado.");
+                    return;
+                }
+            }
+
+            // Criar o transporte com base no tipo selecionado
             Transporte novoTransporte = null;
             if ("Pessoal".equals(tipoTransporte)) {
                 novoTransporte = new TransportePessoal(tipoTransporte, numero, nomeCliente, descricao, peso, latOrigem, lonOrigem, latDestino, lonDestino, pessoas);
@@ -191,8 +224,10 @@ public class FormTransporte {
             }
 
             if (novoTransporte != null) {
+                // Adiciona o transporte na fila de pendentes
+                transportesPendentes.add(novoTransporte);
                 transportes.add(novoTransporte);
-                areaDeTexto.setText("Transporte adicionado à fila de pendentes.\n" + novoTransporte);
+                areaDeTexto.setText("dados.Transporte adicionado à fila de pendentes.\n" + novoTransporte);
             } else {
                 JOptionPane.showMessageDialog(painelTransporte, "ERRO: Não foi possível cadastrar o transporte.");
             }
@@ -216,31 +251,31 @@ public class FormTransporte {
         for (Transporte transportes : transportes) {
             if (transportes instanceof TransportePessoal) {
                 TransportePessoal tp = (TransportePessoal) transportes;
-                builder.append("Transporte Pessoal - Número: ").append(tp.getNumero())
+                builder.append("dados.Transporte Pessoal - Número: ").append(tp.getNumero())
                         .append(", Cliente: ").append(tp.getNomeCliente())
                         .append(", Descrição: ").append(tp.getDescricao())
                         .append(", Peso: ").append(tp.getPeso())
                         .append(", Capacidade: ").append(tp.getQtdPessoas() + " pessoas")
-                        .append(", Distância: ").append(tp.calcularDistancia() + "km")
-                        .append(", Custo: ").append(tp.calculaCusto())
+                        .append(", Coordenadas de origem: ").append(tp.getLatitudeOrigem() + ", ").append(tp.getLongitudeOrigem())
+                        .append(", Coordenadas de destino: ").append(tp.getLatitudeDestino() + ", ").append(tp.getLongitudeDestino())
                         .append(", Situação: ").append(tp.getSituacao()).append("\n");
             } else if (transportes instanceof TransporteCargaInanimada) {
                 TransporteCargaInanimada tci = (TransporteCargaInanimada) transportes;
-                builder.append("Transporte de Carga Inanimada - Número: ").append(tci.getNumero())
+                builder.append("dados.Transporte de Carga Inanimada - Número: ").append(tci.getNumero())
                         .append(", Cliente: ").append(tci.getNomeCliente())
                         .append(", Descrição: ").append(tci.getDescricao())
                         .append(", Peso: ").append(tci.getPeso())
-                        .append(", Distância: ").append(tci.calcularDistancia() + "km")
-                        .append(", Custo: ").append(tci.calculaCusto())
+                        .append(", Coordenadas de origem: ").append(tci.getLatitudeOrigem() + ", ").append(tci.getLongitudeOrigem())
+                        .append(", Coordenadas de destino: ").append(tci.getLatitudeDestino() + ", ").append(tci.getLongitudeDestino())
                         .append(", Situação: ").append(tci.getSituacao()).append("\n");
             } else if (transportes instanceof TransporteCargaViva) {
                 TransporteCargaViva tcv = (TransporteCargaViva) transportes;
-                builder.append("Transporte de Carga Viva - Número: ").append(tcv.getNumero())
+                builder.append("dados.Transporte de Carga Viva - Número: ").append(tcv.getNumero())
                         .append(", Cliente: ").append(tcv.getNomeCliente())
                         .append(", Descrição: ").append(tcv.getDescricao())
                         .append(", Peso: ").append(tcv.getPeso())
-                        .append(", Distância: ").append(tcv.calcularDistancia() + "km")
-                        .append(", Custo: ").append(tcv.calculaCusto())
+                        .append(", Coordenadas de origem: ").append(tcv.getLatitudeOrigem() + ", ").append(tcv.getLongitudeOrigem())
+                        .append(", Coordenadas de destino: ").append(tcv.getLatitudeDestino() + ", ").append(tcv.getLongitudeDestino())
                         .append(", Situação: ").append(tcv.getSituacao()).append("\n");
             }
         }
@@ -248,80 +283,75 @@ public class FormTransporte {
     }
 
     private void processarTransportesPendentes() {
-        StringBuilder resultado = new StringBuilder("PROCESSAMENTO DE TRANSPORTES PENDENTES\n");
-
-        // uma lista temporária para armazenar transportes não alocados
+        StringBuilder resultado = new StringBuilder("PROCESSAMENTO DE TRANSPORTES PENDENTES:\n");
+        // Lista temporária para armazenar transportes não alocados
         ArrayList<Transporte> naoAlocados = new ArrayList<>();
-        // percorre cada transporte pendente
-        for (Transporte transporte : transportes) {
+        // Percorre cada transporte pendente
+        for (Transporte transporte : transportesPendentes) {
             boolean alocado = false;
-            // tenta alocar o transporte a um drone disponível
+            // Tenta alocar o transporte a um drone disponível
             for (Drone drone : drones) {
                 if (drone instanceof DronePessoal && transporte instanceof TransportePessoal) {
                     DronePessoal dronePessoal = (DronePessoal) drone;
                     TransportePessoal transportePessoal = (TransportePessoal) transporte;
                     if (dronePessoal.getQtdMaxPessoas() >= transportePessoal.getQtdPessoas()) {
-                        resultado.append("Transporte Pessoal ")
+                        resultado.append("dados.Transporte Pessoal ")
                                 .append(transporte.getNumero())
-                                .append(" vinculado ao Drone Pessoal ")
+                                .append(" alocado ao dados.Drone Pessoal ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transportePessoal.setSituacao(Estado.ALOCADO);
+                        transportesPendentes.remove(transporte);
                         break; // Sai do loop de drones após alocação
                     }
                 } else if (drone instanceof DroneCargaViva && transporte instanceof TransporteCargaViva) {
                     DroneCargaViva droneCargaViva = (DroneCargaViva) drone;
                     TransporteCargaViva transporteCargaViva = (TransporteCargaViva) transporte;
 
-                    if ((transporteCargaViva.getPeso()<=((DroneCargaViva) drone).getPesoMaximo())) {
-                        resultado.append("Transporte de Carga Viva ")
+                    if (droneCargaViva.climatizado()) {
+                        resultado.append("dados.Transporte de Carga Viva ")
                                 .append(transporte.getNumero())
-                                .append(" vinculado ao Drone de Carga Viva ")
+                                .append(" alocado ao dados.Drone de Carga Viva ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaViva.setSituacao(Estado.ALOCADO);
+                        transportesPendentes.remove(transporte);
                         break;
                     }
                 } else if (drone instanceof DroneCargaInanimada && transporte instanceof TransporteCargaInanimada) {
                     DroneCargaInanimada droneCargaInanimada = (DroneCargaInanimada) drone;
                     TransporteCargaInanimada transporteCargaInanimada = (TransporteCargaInanimada) transporte;
 
-                    if (!droneCargaInanimada.protegido() && !transporteCargaInanimada.isPerigosa()) {
-                        resultado.append("Transporte de Carga Inanimada ")
+                    if (droneCargaInanimada.protegido() || !transporteCargaInanimada.isPerigosa()) {
+                        resultado.append("dados.Transporte de Carga Inanimada ")
                                 .append(transporte.getNumero())
-                                .append(" vinculado ao Drone de Carga Inanimada ")
+                                .append(" alocado ao dados.Drone de Carga Inanimada ")
                                 .append(drone.getCodigo()).append("\n");
                         alocado = true;
                         transporteCargaInanimada.setSituacao(Estado.ALOCADO);
-                        break;
-                    } if (droneCargaInanimada.protegido() && transporteCargaInanimada.isPerigosa()) {
-                        resultado.append("Transporte de Carga Inanimada ")
-                                .append(transporte.getNumero())
-                                .append(" vinculado ao Drone de Carga Inanimada ")
-                                .append(drone.getCodigo()).append("\n");
-                        alocado = true;
-                        transporteCargaInanimada.setSituacao(Estado.ALOCADO);
+                        transportesPendentes.remove(transporte);
                         break;
                     }
                 }
             }
 
-            // se não foi alocado, adiciona à lista de não alocados
+            // Caso não tenha sido alocado, adiciona à lista de não alocados
             if (!alocado) {
                 naoAlocados.add(transporte);
             }
         }
 
-        // mostra os transportes que não foram alocados
+        // Exibe os transportes que não foram alocados
         if (!naoAlocados.isEmpty()) {
             resultado.append("\nTRANSPORTES NÃO ALOCADOS:\n");
             for (Transporte transporte : naoAlocados) {
-                resultado.append("Transporte Nº").append(transporte.getNumero()+", Situação: ").append(transporte.getSituacao()+"\n");
+                resultado.append("dados.Transporte Nº").append(transporte.getNumero() + ", Situação: ").append(transporte.getSituacao() + "\n");
             }
         } else {
             resultado.append("\nTodos os transportes foram alocados com sucesso!\n");
         }
 
+        // Exibe o resultado na área de texto
         areaDeTexto.setText(resultado.toString());
     }
 
@@ -391,33 +421,39 @@ public class FormTransporte {
                 break;
             }
         }
+        for (Transporte transporte : transportesPendentes) {
+            if (transporte.getNumero() == numeroTransporte) {
+                transporteEncontrado = transporte;
+                break;
+            }
+        }
 
         if (transporteEncontrado == null) {
-            JOptionPane.showMessageDialog(painelTransporte, "ERRO: Transporte com o número indicado não encontrado.");
+            JOptionPane.showMessageDialog(painelTransporte, "ERRO: dados.Transporte com o número indicado não encontrado.");
             return;
         }
 
-        // mostra dados do transporte encontrado
-        String dadosTransporte = String.format("Transporte "+transporteEncontrado.getTipoTransporte()+" Nº: %d" +
-                        "\nCliente: "+transporteEncontrado.getNomeCliente() +
-                        "\nDescrição: "+transporteEncontrado.getDescricao() +
-                        "\nPeso: "+transporteEncontrado.getPeso()+"kg" +
-                        "\nDrone atribuído: "+transporteEncontrado.getDrone() +
+        // Exibir dados do transporte encontrado
+        String dadosTransporte = String.format("dados.Transporte " + transporteEncontrado.getTipoTransporte() + " Nº: %d" +
+                        "\nCliente: " + transporteEncontrado.getNomeCliente() +
+                        "\nDescrição: " + transporteEncontrado.getDescricao() +
+                        "\nPeso: " + transporteEncontrado.getPeso() + "kg" +
+                        "\ndados.Drone atribuído: " + transporteEncontrado.getDrone() +
                         "\nSituação Atual: %s",
 
                 transporteEncontrado.getNumero(),
                 transporteEncontrado.getSituacao());
         JOptionPane.showMessageDialog(painelTransporte, dadosTransporte);
 
-        // vê se a situação pode ser alterada
+        // Verificar se pode ser alterado
         if (transporteEncontrado.getSituacao() == Estado.TERMINADO ||
                 transporteEncontrado.getSituacao() == Estado.CANCELADO) {
             JOptionPane.showMessageDialog(painelTransporte, "ERRO: A situação do transporte não pode ser alterada (TERMINADO ou CANCELADO).");
             return;
         }
 
-        // solicitar uma situação nova
-        String[] opcoes = {"PENDENTE", "ALOCADO", "CANCELADO","TERMINADO"};
+        // Solicitar nova situação
+        String[] opcoes = {"PENDENTE", "ALOCADO", "CANCELADO", "TERMINADO"};
         String novaSituacaoString = (String) JOptionPane.showInputDialog(painelTransporte,
                 "Escolha a nova situação do transporte:",
                 "Alterar Situação",
@@ -427,12 +463,103 @@ public class FormTransporte {
         if (novaSituacaoString != null && !novaSituacaoString.trim().isEmpty()) {
             Estado novaSituacao = Estado.valueOf(novaSituacaoString);
             transporteEncontrado.setSituacao(novaSituacao);
+            if (novaSituacao == Estado.PENDENTE)
+                transportesPendentes.add(transporteEncontrado);
             JOptionPane.showMessageDialog(painelTransporte, "Situação do transporte alterada com sucesso!");
         } else {
             JOptionPane.showMessageDialog(painelTransporte, "ERRO: Nenhuma nova situação foi selecionada.");
         }
     }
 
+<<<<<<< Updated upstream
+//    public void importarDados(){
+//        try {
+//            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):");
+//            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+//                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+//                return;
+//            }
+//            ScannerCSV sc = new ScannerCSV();
+//            try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomeArquivo))) {
+//                    String line = "";
+//                    while ((line = reader.readLine()) != null) {
+//                        Scanner scl = new Scanner(line).useDelimiter(";");
+//                        System.out.println(scl);
+//                        if(sc.readTransportes(scl,transportesPendentes, transportes) != null){
+//                        transportes.add(sc.readTransportes(scl,transportesPendentes, transportes));
+//                        }
+//                    }
+//            }catch(Exception e){
+//
+//            }
+//            JOptionPane.showMessageDialog(getPainel(), "Dados carregados com sucesso!");
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível carregar os dados.\n" + e.getMessage());
+//        }
+//    }
+    public void exportarDados(){
+        try{
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV em que deseja salvar os dados(SEM extensão ou '_drones'/'_transportes'):");
+=======
+    public void importarDados() {
+        try {
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):") + ".CSV";
+            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+                return;
+            }
+            ScannerCSV sc = new ScannerCSV();
+            transportesPendentes.add(sc.readTransportes(nomeArquivo, transportes));
+            transportes.add(sc.readTransportes(nomeArquivo, transportes));
+            JOptionPane.showMessageDialog(getPainel(), "Dados carregados com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível carregar os dados.\n" + e.getMessage());
+        }
+    }
+
+    public void exportarDados() {
+        try {
+            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV em que deseja salvar os dados(SEM extensão ou '_drones'/'_transportes'):") + ".CSV";
+>>>>>>> Stashed changes
+            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+                return;
+            }
+            ScannerCSV sc = new ScannerCSV();
+            sc.writeTransportes(nomeArquivo, transportes);
+            JOptionPane.showMessageDialog(getPainel(), "Dados salvos em " + nomeArquivo + " com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível exportar os dados.\n" + e.getMessage());
+        }
+
+    }
+
+//    public String gerarRelatorioTransportes() {
+//        if (transportes.isEmpty()) {
+//            return "Nenhum transporte cadastrado.\n";
+//        }
+//
+//        StringBuilder builder = new StringBuilder("RELATÓRIO DE TRANSPORTES:\n");
+//        for (dados.Transporte transporte : transportes) {
+//            builder.append("dados.Transporte Nº: ").append(transporte.getNumero())
+//                    .append("\nCliente: ").append(transporte.getNomeCliente())
+//                    .append("\nDescrição: ").append(transporte.getDescricao())
+//                    .append("\nPeso: ").append(transporte.getPeso())
+//                    .append("\nCoordenadas de Origem: ").append(transporte.getLatitudeOrigem())
+//                    .append(", ").append(transporte.getLongitudeOrigem())
+//                    .append("\nCoordenadas de Destino: ").append(transporte.getLatitudeDestino())
+//                    .append(", ").append(transporte.getLongitudeDestino())
+//                    .append("\nSituação: ").append(transporte.getSituacao())
+//                    .append("\nCusto Estimado: ").append(calcularCustoTransporte(transporte))  // Calculate the cost
+//                    .append("\n---\n");
+//        }
+//        return builder.toString();
+//    }
+
+    private double calcularCustoTransporte(Transporte transporte) {
+        // Implement your cost calculation logic here
+        return 0.0;  // Placeholder value
+    }
 
     public ArrayList<Transporte> getTransportes() {
         return transportes;
@@ -442,12 +569,7 @@ public class FormTransporte {
         if (transportes != null) {
             this.transportes = transportes;
         } else {
-            this.transportes = new ArrayList<>();
-        }
-    }
-    private void listarCsv(){
-        for(Transporte t : transportes){
-            System.out.println(t.getType() + t.getNumero() + t.getNomeCliente() + t.getDescricao() + t.getPeso() + t.getLatitudeOrigem() + t.getLatitudeDestino() + t.getLongitudeDestino() + t.getSituacao());
+            this.transportes = new ArrayList<>(); // Initializes if the provided list is null
         }
     }
 }

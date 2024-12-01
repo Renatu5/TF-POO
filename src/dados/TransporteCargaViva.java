@@ -1,6 +1,7 @@
 package dados;
 
 import java.io.Serializable;
+
 public class TransporteCargaViva extends Transporte implements Serializable {
     private static final long serialVersionUID = 1L;
     private double temperaturaMinima;
@@ -29,5 +30,13 @@ public class TransporteCargaViva extends Transporte implements Serializable {
 
     public double getTempMax() {
         return temperaturaMaxima;
+    }
+
+
+    public String toCsv() {
+        {
+            return "type;Numero Identificador;Nome do Cliente;Descricao;peso;LatitudeOrigem;LatitudeDestino;longitudeOrigem;LongitudeDestino;temperaturaMinima;temperaturaMaxima;"
+                    + getType() + ";" + getNumero() + ";" + getNomeCliente() + ";" + getDescricao() + ";" + getPeso() + ";" + getLatitudeOrigem() + ";" + getLatitudeDestino() + ";" + getLongitudeOrigem() + ";" + getLongitudeDestino() + ";" + temperaturaMinima + ";" + temperaturaMaxima + ";\n";
+        }
     }
 }
