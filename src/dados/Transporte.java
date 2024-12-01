@@ -1,10 +1,7 @@
 package dados;
 
 import java.io.Serializable;
-<<<<<<< Updated upstream
 import java.util.Objects;
-=======
->>>>>>> Stashed changes
 
 public abstract class Transporte implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -22,8 +19,8 @@ public abstract class Transporte implements Serializable {
     private int type;
 
     public Transporte(int type, String tipoTransporte, int numero, String nomeCliente, String descricao, double peso,
-                      double latitudeOrigem, double longitudeOrigem,
-                      double latitudeDestino, double longitudeDestino) {
+            double latitudeOrigem, double longitudeOrigem,
+            double latitudeDestino, double longitudeDestino) {
         this.type = type;
         this.tipoTransporte = tipoTransporte;
         this.numero = numero;
@@ -36,7 +33,6 @@ public abstract class Transporte implements Serializable {
         this.longitudeDestino = longitudeDestino;
         this.situacao = Estado.PENDENTE;
     }
-
 
     public abstract String toCsv();
 
@@ -51,14 +47,13 @@ public abstract class Transporte implements Serializable {
         return raioTerra * c;
     }
 
-//    public double calculaCusto(Drone drone) {
-//        double distancia = calcularDistancia();
-//        double custoKm = drone.calcularCustoKm();
-//        return (custoKm * distancia) + calcularAcréscimos();
-//    }
+    // public double calculaCusto(Drone drone) {
+    // double distancia = calcularDistancia();
+    // double custoKm = drone.calcularCustoKm();
+    // return (custoKm * distancia) + calcularAcréscimos();
+    // }
 
     public abstract double calculaCusto();
-
 
     public Estado getSituacao() {
         return situacao;
@@ -110,7 +105,8 @@ public abstract class Transporte implements Serializable {
 
     public void setSituacao(Estado situacao) {
         if (this.situacao == Estado.TERMINADO || this.situacao == Estado.CANCELADO) {
-            throw new IllegalStateException("Não é possível alterar a situação de um transporte TERMINADO ou CANCELADO.");
+            throw new IllegalStateException(
+                    "Não é possível alterar a situação de um transporte TERMINADO ou CANCELADO.");
         }
         this.situacao = situacao;
     }
@@ -121,19 +117,9 @@ public abstract class Transporte implements Serializable {
                 "\nTipo: " + tipoTransporte +
                 "\nCliente: " + nomeCliente +
                 "\nDescrição: " + descricao +
-<<<<<<< Updated upstream
-                "\nPeso: " + peso + "kg"+
-                "\nDrone atribuído: " + Objects.toString(drone, "Nenhum"))+
+                "\nPeso: " + peso + "kg" +
+                "\nDrone atribuído: " + Objects.toString(drone, "Nenhum")) +
                 "\nSituação: " + situacao;
-=======
-                "\nPeso: " + peso +
-                "\nSituação: " + situacao +
-                "\ndados.Drone atribuído: " + drone
-        );
-    }
-
-    public void setDrone(Drone droneDisponivel) {
->>>>>>> Stashed changes
 
     }
 
