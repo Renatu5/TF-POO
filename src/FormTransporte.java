@@ -135,7 +135,7 @@ public class FormTransporte {
         importarDadosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                importarDados();
+//                importarDados();
             }
         });
         exportarDadosButton.addActionListener(new ActionListener() {
@@ -471,31 +471,31 @@ public class FormTransporte {
         }
     }
 
-    public void importarDados(){
-        try {
-            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):");
-            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
-                return;
-            }
-            ScannerCSV sc = new ScannerCSV();
-            try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomeArquivo))) {
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        Scanner scl = new Scanner(line).useDelimiter(";");
-                        System.out.println(scl);
-                        if(sc.readTransportes(scl,transportesPendentes, transportes) != null){
-                        transportes.add(sc.readTransportes(scl,transportesPendentes, transportes));
-                        }
-                    }
-            }catch(Exception e){
-
-            }
-            JOptionPane.showMessageDialog(getPainel(), "Dados carregados com sucesso!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível carregar os dados.\n" + e.getMessage());
-        }
-    }
+//    public void importarDados(){
+//        try {
+//            String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV (SEM extensão ou '_drones'/'_transportes'):");
+//            if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
+//                JOptionPane.showMessageDialog(getPainel(), "ERRO: Nome do arquivo inválido.");
+//                return;
+//            }
+//            ScannerCSV sc = new ScannerCSV();
+//            try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomeArquivo))) {
+//                    String line = "";
+//                    while ((line = reader.readLine()) != null) {
+//                        Scanner scl = new Scanner(line).useDelimiter(";");
+//                        System.out.println(scl);
+//                        if(sc.readTransportes(scl,transportesPendentes, transportes) != null){
+//                        transportes.add(sc.readTransportes(scl,transportesPendentes, transportes));
+//                        }
+//                    }
+//            }catch(Exception e){
+//
+//            }
+//            JOptionPane.showMessageDialog(getPainel(), "Dados carregados com sucesso!");
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(getPainel(), "ERRO: Não foi possível carregar os dados.\n" + e.getMessage());
+//        }
+//    }
     public void exportarDados(){
         try{
             String nomeArquivo = JOptionPane.showInputDialog(getPainel(), "Digite o nome do arquivo CSV em que deseja salvar os dados(SEM extensão ou '_drones'/'_transportes'):");

@@ -1,6 +1,8 @@
 package dados;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 public abstract class Transporte implements Serializable {
     private static final long serialVersionUID = 1L;
     private int numero;
@@ -32,7 +34,6 @@ public abstract class Transporte implements Serializable {
         this.situacao = Estado.PENDENTE;
     }
 
-    public abstract double calcularAcréscimos();
 
     public abstract String toCsv();
 
@@ -47,11 +48,14 @@ public abstract class Transporte implements Serializable {
         return raioTerra * c;
     }
 
-    public double calcularCustoFinal(Drone drone) {
-        double distancia = calcularDistancia();
-        double custoKm = drone.calcularCustoKm();
-        return (custoKm * distancia) + calcularAcréscimos();
-    }
+//    public double calculaCusto(Drone drone) {
+//        double distancia = calcularDistancia();
+//        double custoKm = drone.calcularCustoKm();
+//        return (custoKm * distancia) + calcularAcréscimos();
+//    }
+
+    public abstract double calculaCusto();
+
 
     public Estado getSituacao() {
         return situacao;
@@ -97,6 +101,9 @@ public abstract class Transporte implements Serializable {
         return drone;
     }
 
+    public void setDrone(Drone drone) {
+        this.drone = drone;
+    }
 
     public void setSituacao(Estado situacao) {
         if (this.situacao == Estado.TERMINADO || this.situacao == Estado.CANCELADO) {
@@ -107,17 +114,13 @@ public abstract class Transporte implements Serializable {
 
     @Override
     public String toString() {
-        return ("dados.Transporte N°" + numero
-                + "\nTipo: " + tipoTransporte +
+        return ("Transporte N°" + numero +
+                "\nTipo: " + tipoTransporte +
                 "\nCliente: " + nomeCliente +
                 "\nDescrição: " + descricao +
-                "\nPeso: " + peso +
-                "\nSituação: " + situacao +
-                "\ndados.Drone atribuído: " + drone
-                );
-    }
-
-    public void setDrone(Drone droneDisponivel) {
+                "\nPeso: " + peso + "kg"+
+                "\nDrone atribuído: " + Objects.toString(drone, "Nenhum"))+
+                "\nSituação: " + situacao;
 
     }
 

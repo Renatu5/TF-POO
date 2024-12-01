@@ -13,8 +13,11 @@ public class TransporteCargaInanimada extends Transporte implements Serializable
     }
 
     @Override
-    public double calcularAcréscimos() {
-        return cargaPerigosa ? 500.0 : 0.0;
+    public double calculaCusto() {
+        double distancia = calcularDistancia();
+        double custoKm = getDrone().calcularCustoKm();
+        double acrescimo = cargaPerigosa ? 500.0 : 0.0;
+        return (custoKm * distancia) + acrescimo;
     }
 
     public boolean isPerigosa() {

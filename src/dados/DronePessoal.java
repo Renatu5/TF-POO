@@ -19,5 +19,13 @@ public class DronePessoal extends Drone implements Serializable {
         return qtdMaxPessoas;
     }
 
+    @Override
+    public String toString() {
+        return "Drone Pessoal N°"+getCodigo()+
+                "\nCusto Fixo: "+"R$"+getCustoFixo()+
+                "\nAutonomia: "+getAutonomia()+ " minutos"+
+                "\nCapacidade: "+getQtdMaxPessoas()+" pessoas";
+    }
+
 
 }

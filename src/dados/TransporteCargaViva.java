@@ -16,9 +16,11 @@ public class TransporteCargaViva extends Transporte implements Serializable {
     }
 
     @Override
-    public double calcularAcréscimos() {
-        double intervalo = temperaturaMaxima - temperaturaMinima;
-        return intervalo > 10.0 ? 1000.0 : 0.0;
+    public double calculaCusto() {
+        double distancia = calcularDistancia();
+        double custoKm = getDrone().calcularCustoKm();
+        double acrescimo = (temperaturaMaxima - temperaturaMinima > 10) ? 1000.0 : 0.0;
+        return (custoKm * distancia) + acrescimo;
     }
 
     public double getTempMin() {

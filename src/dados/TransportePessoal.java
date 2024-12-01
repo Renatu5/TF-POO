@@ -13,8 +13,11 @@ public class TransportePessoal extends Transporte implements Serializable {
     }
 
     @Override
-    public double calcularAcréscimos() {
-        return qtdPessoas * 10.0;
+    public double calculaCusto() {
+        double distancia = calcularDistancia();
+        double custoKm = getDrone().calcularCustoKm();
+        double acrescimo = qtdPessoas * 10.0;
+        return (custoKm * distancia) + acrescimo;
     }
 
     public int getQtdPessoas() {
@@ -27,6 +30,8 @@ public class TransportePessoal extends Transporte implements Serializable {
                     +getType()+";"+getNumero()+";"+getNomeCliente()+";"+getDescricao()+";"+getPeso()+";"+getLatitudeOrigem()+";"+getLatitudeDestino()+";"+getLongitudeOrigem()+";"+getLongitudeDestino()+";"+getSituacao()+";"+getQtdPessoas()+";\n";
         }
     }
+
+
 
 }
 

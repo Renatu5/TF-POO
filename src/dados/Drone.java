@@ -24,6 +24,10 @@ public abstract class Drone implements Serializable {
         return custoFixo;
     }
 
+    public void setCustoFixo(double custoFixo) {
+        this.custoFixo = custoFixo;
+    }
+
     public double getAutonomia() {
         return autonomia;
     }
