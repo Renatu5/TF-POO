@@ -46,7 +46,6 @@ public class FormTransporte {
     private JButton botaoAlterarSituacao;
     private ArrayList<Transporte> transportes = new ArrayList<>();
     private ArrayList<Drone> drones;
-    private Queue<Transporte> transportesPendentes = new LinkedList<>();
 
     private void createUIComponents() {
         logotipo = new JLabel(new ImageIcon("logo.png"));
@@ -222,8 +221,8 @@ public class FormTransporte {
                         .append(", Descrição: ").append(tp.getDescricao())
                         .append(", Peso: ").append(tp.getPeso())
                         .append(", Capacidade: ").append(tp.getQtdPessoas() + " pessoas")
-                        .append(", Coordenadas de origem: ").append(tp.getLatitudeOrigem() + ", ").append(tp.getLongitudeOrigem())
-                        .append(", Coordenadas de destino: ").append(tp.getLatitudeDestino() + ", ").append(tp.getLongitudeDestino())
+                        .append(", Distância: ").append(tp.calcularDistancia() + "km")
+                        .append(", Custo: ").append(tp.calculaCusto())
                         .append(", Situação: ").append(tp.getSituacao()).append("\n");
             } else if (transportes instanceof TransporteCargaInanimada) {
                 TransporteCargaInanimada tci = (TransporteCargaInanimada) transportes;
@@ -231,8 +230,8 @@ public class FormTransporte {
                         .append(", Cliente: ").append(tci.getNomeCliente())
                         .append(", Descrição: ").append(tci.getDescricao())
                         .append(", Peso: ").append(tci.getPeso())
-                        .append(", Coordenadas de origem: ").append(tci.getLatitudeOrigem() + ", ").append(tci.getLongitudeOrigem())
-                        .append(", Coordenadas de destino: ").append(tci.getLatitudeDestino() + ", ").append(tci.getLongitudeDestino())
+                        .append(", Distância: ").append(tci.calcularDistancia() + "km")
+                        .append(", Custo: ").append(tci.calculaCusto())
                         .append(", Situação: ").append(tci.getSituacao()).append("\n");
             } else if (transportes instanceof TransporteCargaViva) {
                 TransporteCargaViva tcv = (TransporteCargaViva) transportes;
@@ -240,8 +239,8 @@ public class FormTransporte {
                         .append(", Cliente: ").append(tcv.getNomeCliente())
                         .append(", Descrição: ").append(tcv.getDescricao())
                         .append(", Peso: ").append(tcv.getPeso())
-                        .append(", Coordenadas de origem: ").append(tcv.getLatitudeOrigem() + ", ").append(tcv.getLongitudeOrigem())
-                        .append(", Coordenadas de destino: ").append(tcv.getLatitudeDestino() + ", ").append(tcv.getLongitudeDestino())
+                        .append(", Distância: ").append(tcv.calcularDistancia() + "km")
+                        .append(", Custo: ").append(tcv.calculaCusto())
                         .append(", Situação: ").append(tcv.getSituacao()).append("\n");
             }
         }
@@ -434,10 +433,6 @@ public class FormTransporte {
         }
     }
 
-    private double calcularCustoTransporte(Transporte transporte) {
-        // Implement your cost calculation logic here
-        return 0.0;
-    }
 
     public ArrayList<Transporte> getTransportes() {
         return transportes;

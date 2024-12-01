@@ -34,7 +34,6 @@ public abstract class Transporte implements Serializable {
         this.situacao = Estado.PENDENTE;
     }
 
-    public abstract double calcularAcréscimos();
 
     public double calcularDistancia() {
         double raioTerra = 6371; // Raio da Terra em km
@@ -47,11 +46,14 @@ public abstract class Transporte implements Serializable {
         return raioTerra * c;
     }
 
-    public double calcularCustoFinal(Drone drone) {
-        double distancia = calcularDistancia();
-        double custoKm = drone.calcularCustoKm();
-        return (custoKm * distancia) + calcularAcréscimos();
-    }
+//    public double calculaCusto(Drone drone) {
+//        double distancia = calcularDistancia();
+//        double custoKm = drone.calcularCustoKm();
+//        return (custoKm * distancia) + calcularAcréscimos();
+//    }
+
+    public abstract double calculaCusto();
+
 
     public Estado getSituacao() {
         return situacao;
@@ -97,6 +99,9 @@ public abstract class Transporte implements Serializable {
         return drone;
     }
 
+    public void setDrone(Drone drone) {
+        this.drone = drone;
+    }
 
     public void setSituacao(Estado situacao) {
         if (this.situacao == Estado.TERMINADO || this.situacao == Estado.CANCELADO) {

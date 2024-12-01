@@ -31,7 +31,7 @@ public class DroneCargaViva extends DroneCarga implements Serializable {
 
     @Override
     public double calcularCustoKm() {
-        return 0;
+        return getCustoFixo() + (climatizado ? 20.0 : 10.0);
     }
 
 }

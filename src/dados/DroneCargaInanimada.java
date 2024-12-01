@@ -30,7 +30,7 @@ public class DroneCargaInanimada extends DroneCarga implements Serializable {
 
     @Override
     public double calcularCustoKm() {
-        return 0;
+        return getCustoFixo() + (protecao ? 10.0 : 5.0);
     }
 
 }
